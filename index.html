@@ -169,7 +169,7 @@
     <div class="stat"><div class="k">所持金</div><div class="v" id="stMoney">¥0</div></div>
     <div class="stat"><div class="k">自動収入</div><div class="v" id="stPerSec">¥0/秒</div></div>
     <div class="stat"><div class="k">一皿の売上</div><div class="v" id="stServe">¥0</div></div>
-    <div class="stat"><div class="k">名声ランク（全収入+20%/個）</div><div class="v" id="stPrestige">0</div></div>
+    <div class="stat" id="statFameBox" style="display:none;"><div class="k">名声ランク（1つにつき全収入×1.2）</div><div class="v" id="stPrestige">0</div></div>
   </div>
   <div id="progStrip">
     <div id="progRow">
@@ -215,7 +215,7 @@
       <button id="btnSec10" class="secBtn">⏱ 10秒分</button>
       <button id="btnOoiri" class="secBtn">🎉 大入り 30秒分</button>
     </div>
-    <div style="font-size:11.5px;color:#b39d7d;margin-top:8px;">押すたびに一皿＋自動収入の1秒分が売れる（強化で秒分は増える）。設備を増やすと、放っておいても売れていく。</div>
+    <div style="font-size:11.5px;color:#b39d7d;margin-top:8px;">押すたびに一皿＋自動収入の1秒分が売れる（強化で秒分は増える）。長押しでも出せる。高い「こだわり強化」を買うため、タップで貯めるのがこの店の流儀。</div>
     <div id="menuLine" style="font-size:11.5px;color:#8a7454;margin-top:6px;"></div>
   </div>
   </div>
@@ -244,9 +244,13 @@
       <div class="view" id="viewUps">
 <div class="sec">
   <h2>こだわり強化（一度だけ買える）</h2>
-  <div id="ups"></div>
+   <div id="ups"></div>
+<div id="kiwameSec" style="display:none;">
+<h2 style="margin-top:14px;">極め（クリア後のやり込み ― 各品もう一段、効果は全収入×4）</h2>
+<div id="kiwame"></div>
+</div>
 
-  </div>
+</div>
       </div>
       <div class="view" id="viewOrders">
 <div class="sec">
@@ -278,10 +282,10 @@
 <div class="sec">
   <h2>のれん分け（転生）</h2>
   <div class="panel">
-    今の店の売上が条件額を超えたら、のれん分けができる（最初は <b>¥10,000,000</b>、のれん分けのたびに条件額は上がっていく）。新しい店は屋台から再スタートし、この店のランクも最初からになる。<br>
-    今期の売上が <b>¥1億</b> を超えると、この店の商圏では伸びが鈍っていく（商圏の限界）。のれん分けで新しい商圏に店を出すと、また伸びるようになる。<br>
-    代わりに <b>名声</b> が手に入る。名声には2つの顔がある: ①<b>名声ランク</b>（通算の獲得数）1つにつき全収入が永久に <b>+20%</b>。②<b>使える名声</b> は、のれん分けの時に開く名声ショップで恒常強化に交換できる。<br>
-    <span style="color:#8a7454;font-size:12.5px;">消えるもの: お金・設備・こだわり強化・今期の売上とランク／残るもの: 名声・名声ショップの強化・常連さんの名簿と物語・実績・クリア記録</span>
+    壁にぶつかって伸びが止まったら、のれん分けの時。こだわり強化（クリア後は『極め』）を買っているとできる。<br>
+    手に入る <b>名声</b> は、こだわり強化や『極め』を買うたびに <b>3</b> ずつ貯まる。のれん分けで受け取れるのは1回に <b>6</b> までで、余りは次回に繰り越される。売上を伸ばすだけでは増えない。<br>
+    名声には2つの顔がある: ①<b>名声ランク</b>（通算の獲得数）1つにつき全収入が永久に <b>×1.2</b>（掛け算で効く）。②<b>使える名声</b> は、のれん分けの時に開く名声ショップで恒常強化に交換できる。<br>
+    <span style="color:#8a7454;font-size:12.5px;">消えるもの: お金・設備・今期の売上／残るもの: こだわり強化と『極め』・店のランク・名声と名声ショップの強化・常連さんの名簿と物語・料理の腕前・実績・クリア記録</span>
     <div id="prestigeInfo" style="margin-top:6px;"></div>
     <div id="ownedList" style="margin-top:8px;font-size:12px;color:#b39d7d;line-height:1.7;"></div>
     <button id="btnPrestige">のれん分けする</button>
@@ -299,8 +303,8 @@
   </div>
   </div>
     <p class="small">
-    セーブは自動（このブラウザに保存）。閉じている間も、お店が少し稼いでくれます（自動収入の50%、名声ショップで最大100%・最大8時間分）。<br>
-    目標: 名声を集めて第2幕（常連の注文）を開き、注文20件を完走して、最後に常連全員へ特別メニューを出すとクリア。通算売上¥10億は途中の目安です。その後も営業は続けられます。
+    セーブは自動（このブラウザに保存）。閉じている間も、お店が少し稼いでくれます（自動収入の10%、名声ショップで最大50%・最大16時間分）。<br>
+    目標: こだわり強化を集めて第2幕（常連の注文）を開き、注文20件を完走して、最後に常連全員へ特別メニューを出すとクリア。その後は『極め』と名声ショップの全段そろえがやり込みです。
   </p>
   <div style="text-align:center;"><button id="btnReset">データを消して最初から</button></div>
 </div>
@@ -334,58 +338,58 @@
 "use strict";
 // ===== 経済データ =====
 const GENS = [
-  { name:"アルバイトの子",   desc:"時給以上の働き。毎秒少しずつ売る",       cost:1500,    rate:5 },
-  { name:"大きな寸胴鍋",     desc:"スープが途切れない店は強い",             cost:12000,   rate:30 },
-  { name:"業務用コンロ",     desc:"火力が段違い。注文の回転が上がる",         cost:30000,   rate:48 },
-  { name:"ベテラン料理人",   desc:"注文の回転が段違いになる",               cost:60000,   rate:95 },
-  { name:"カウンター増設",   desc:"席が増えれば、売上も増える",             cost:350000,  rate:420 },
-  { name:"看板と赤提灯",     desc:"深夜の路地で光る看板が客を呼ぶ",         cost:3500000, rate:3000 },
-  { name:"2店舗目の厨房",    desc:"仕込みが倍速に。もはや工場",             cost:12000000, rate:12000 },
-  { name:"常連のフードライター", desc:"「あの店は本物だ」と記事にしてくれた", cost:24000000, rate:30000 },
-  { name:"深夜の行列",       desc:"行列そのものが宣伝になる最終形態",       cost:45000000, rate:50000 }
+  { name:"アルバイトの子",   desc:"時給以上の働き。毎秒少しずつ売る",       cost:7500,    rate:5 },
+  { name:"大きな寸胴鍋",     desc:"スープが途切れない店は強い",             cost:60000,   rate:30 },
+  { name:"業務用コンロ",     desc:"火力が段違い。注文の回転が上がる",         cost:150000,  rate:48 },
+  { name:"ベテラン料理人",   desc:"注文の回転が段違いになる",               cost:300000,  rate:95 },
+  { name:"カウンター増設",   desc:"席が増えれば、売上も増える",             cost:1750000, rate:420 },
+  { name:"看板と赤提灯",     desc:"深夜の路地で光る看板が客を呼ぶ",         cost:17500000, rate:3000 },
+  { name:"2店舗目の厨房",    desc:"仕込みが倍速に。もはや工場",             cost:60000000, rate:12000 },
+  { name:"常連のフードライター", desc:"「あの店は本物だ」と記事にしてくれた", cost:120000000, rate:30000 },
+  { name:"深夜の行列",       desc:"行列そのものが宣伝になる最終形態",       cost:225000000, rate:50000 }
 ];
-const COST_GROWTH = 1.15;
+const COST_GROWTH = 1.16;
 const MILES = [5, 10, 15, 25, 50, 100];
 const UPS = [
-  { name:"包丁を研ぎ直す",   desc:"手際が良くなり、一皿の売上が2倍",         cost:2500,   cond:s=>s.totalServes>=30,       condText:"通算で30皿出す", kind:"serve",  mult:2 },
-  { name:"看板メニューの開発", desc:"提供の一皿に上乗せされる秒分が+0.25秒増える（合計1.25秒分）", cost:500000, cond:s=>s.totalServes>=600 && s.lifetimeAll>=500000, condText:"通算600皿＋通算売上¥500,000", kind:"tapsec", sec:0.25 },
-  { name:"盛り付けの見直し", desc:"一皿の売上が2倍",                         cost:1000000, cond:s=>s.totalServes>=1000,     condText:"通算で1,000皿出す", kind:"serve",  mult:2 },
-  { name:"名物メニューの完成", desc:"提供の秒分上乗せが+0.25秒増える（合計1.5秒分）", cost:20000000, cond:s=>s.totalServes>=2000 && s.lifetimeAll>=20000000, condText:"通算2,000皿＋通算売上¥20,000,000", kind:"tapsec", sec:0.25 },
-  { name:"伝説の一皿",       desc:"提供の秒分上乗せが+0.5秒増える（合計2秒分）", cost:40000000, cond:s=>s.totalServes>=3500 && s.lifetimeAll>=60000000, condText:"通算3,500皿＋通算売上¥60,000,000", kind:"tapsec", sec:0.5 },
-  { name:"特製ダレの完成",   desc:"全収入が3倍",                             cost:50000,   cond:s=>s.lifetimeRun>=100000,   condText:"今期の売上¥100,000", kind:"global", mult:3 },
-  { name:"アルバイト教育",   desc:"アルバイトの子の収入が2倍",               cost:50000,  cond:s=>s.gens[0]>=10,          condText:"アルバイトの子を10人雇う", kind:"gen", idx:0, mult:2 },
-  { name:"寸胴鍋を二重化",   desc:"大きな寸胴鍋の収入が2倍",                 cost:220000, cond:s=>s.gens[1]>=8,           condText:"大きな寸胴鍋を8つ買う", kind:"gen", idx:1, mult:2 },
-  { name:"常連カード発行",   desc:"全収入が1.5倍",                           cost:300000, cond:s=>s.totalServes>=400,      condText:"通算で400皿出す", kind:"global", mult:1.5 },
-  { name:"ベテランの味付け", desc:"ベテラン料理人の収入が2倍",               cost:1600000, cond:s=>s.gens[3]>=8,          condText:"ベテラン料理人を8人雇う", kind:"gen", idx:3, mult:2 },
-  { name:"店内改装",         desc:"全収入が2倍",                             cost:8000000, cond:s=>s.lifetimeRun>=8000000, condText:"今期の売上¥8,000,000", kind:"global", mult:2 },
-  { name:"行列のさばき方",   desc:"カウンター増設の収入が2倍",               cost:12000000, cond:s=>s.gens[4]>=8,         condText:"カウンター増設を8つ買う", kind:"gen", idx:4, mult:2 },
-  { name:"老舗の秘伝ダレ",   desc:"全収入が2倍",                             cost:60000000,  cond:s=>s.lifetimeAll>=300000000, condText:"通算売上¥300,000,000", kind:"global", mult:2 },
-  { name:"暖簾の力",         desc:"全収入が2倍",                             cost:150000000, cond:s=>s.prestigeCount>=1 && s.lifetimeAll>=600000000, condText:"のれん分け1回＋通算売上¥600,000,000", kind:"global", mult:2 },
-  { name:"伝説の包丁さばき", desc:"全収入が2倍",                             cost:400000000, cond:s=>s.lifetimeRun>=500000000, condText:"今期の売上¥500,000,000", kind:"global", mult:2 }
+  { name:"特製ダレの完成",   desc:"全収入が3倍 ― 最初の壁の向こう側", cost:120000, cond:s=>s.lifetimeRun>=50000, condText:"今期の売上¥50,000", kind:"global", mult:3 },
+  { name:"看板メニューの開発", desc:"「料理を出す」の秒分上乗せが+0.5秒増える（合計1.5秒分）", cost:1189940, cond:s=>s.totalServes>=300, condText:"通算で300皿出す", kind:"tapsec", sec:0.5 },
+  { name:"人材育成の極意",   desc:"アルバイトの子とベテラン料理人の収入が6倍", cost:1797802933928, cond:s=>s.gens[0]>=10, condText:"アルバイトの子を10人雇う", kind:"gen", idxs:[0,3], mult:6 },
+  { name:"常連カード発行",   desc:"常連さんが注文をくれるようになる（第2幕の扉）＋ 全収入が2倍", cost:1887693080624, cond:s=>s.totalServes>=1500, condText:"通算で1,500皿出す", kind:"global", mult:2, unlock2:true },
+  { name:"老舗の秘伝ダレ",   desc:"全収入が5倍", cost:32453612206170, cond:s=>s.lifetimeAll>=100000000, condText:"通算売上¥100,000,000", kind:"global", mult:5 },
+  { name:"行列のさばき方",   desc:"おすすめ（10秒分）と大入り（30秒分）の回復が半分になる", cost:134189816784014, cond:s=>s.gens[4]>=8, condText:"カウンター増設を8つ買う", kind:"seccd" },
+  { name:"三連寸胴と大竈",   desc:"大きな寸胴鍋・業務用コンロ・2店舗目の厨房の収入が8倍", cost:1598915996687525, cond:s=>s.gens[1]>=10, condText:"大きな寸胴鍋を10つ買う", kind:"gen", idxs:[1,2,6], mult:8 },
+  { name:"吟味した食材",     desc:"料理の腕前の上限が「つやつや」まで上がる", cost:2185106412694446, cond:s=>s.totalServes>=8000, condText:"通算で8,000皿出す", kind:"gradecap" },
+  { name:"暖簾の力",         desc:"全収入が6倍", cost:13636567101548836, cond:s=>s.prestigeCount>=2, condText:"のれん分け2回", kind:"global", mult:6 },
+  { name:"名物メニューの完成", desc:"おすすめが20秒分になる", cost:17635847885700522, cond:s=>s.totalServes>=15000, condText:"通算で15,000皿出す", kind:"osusume" },
+  { name:"行列の店構え",     desc:"カウンター増設・看板と赤提灯・常連のフードライター・深夜の行列の収入が8倍", cost:578177158113542784, cond:s=>s.gens[4]>=12, condText:"カウンター増設を12つ買う", kind:"gen", idxs:[4,5,7,8], mult:8 },
+  { name:"極上の素材",       desc:"料理の腕前の上限が「ピカピカ」まで上がる", cost:797653234434962304, cond:s=>s.totalServes>=25000, condText:"通算で25,000皿出す", kind:"gradecap" },
+  { name:"老舗の店構え",     desc:"全収入が8倍", cost:9470136219605112832, cond:s=>s.lifetimeAll>=1000000000000000, condText:"通算売上¥1000兆", kind:"global", mult:8 },
+  { name:"大入りの熱気",     desc:"大入りを使うと10秒間、「料理を出す」の売上が2倍になる", cost:13669951955794485248, cond:s=>ordersDoneCount(s)>=10, condText:"常連の注文を10件満たす", kind:"heat" },
+  { name:"伝説の包丁さばき", desc:"全収入が10倍 ― 最終イベントへの扉", cost:61514783801075183616, cond:s=>ordersDoneCount(s)>=15, condText:"常連の注文を15件満たす", kind:"global", mult:10 }
 ];
-UPS[0].prog=s=>"（現在 "+Math.min(s.totalServes,30)+" / 30皿）";
-UPS[1].prog=s=>"（現在 "+s.totalServes+" / 600皿 ・ 通算売上 "+fmt(s.lifetimeAll)+" / ¥500,000）";
-UPS[2].prog=s=>"（現在 "+s.totalServes+" / 1,000皿）";
-UPS[3].prog=s=>"（現在 "+s.totalServes+" / 2,000皿 ・ 通算売上 "+fmt(s.lifetimeAll)+" / ¥20,000,000）";
-UPS[4].prog=s=>"（現在 "+s.totalServes+" / 3,500皿 ・ 通算売上 "+fmt(s.lifetimeAll)+" / ¥60,000,000）";
-UPS[5].prog=s=>"（現在 今期売上 "+fmt(s.lifetimeRun)+" / ¥100,000）";
-UPS[6].prog=s=>"（現在 "+s.gens[0]+" / 10人）";
-UPS[7].prog=s=>"（現在 "+s.gens[1]+" / 8つ）";
-UPS[8].prog=s=>"（現在 "+s.totalServes+" / 400皿）";
-UPS[9].prog=s=>"（現在 "+s.gens[3]+" / 8人）";
-UPS[10].prog=s=>"（現在 今期売上 "+fmt(s.lifetimeRun)+" / ¥8,000,000）";
-UPS[11].prog=s=>"（現在 "+s.gens[4]+" / 8つ）";
-UPS[12].prog=s=>"（現在 通算売上 "+fmt(s.lifetimeAll)+" / ¥300,000,000）";
-UPS[13].prog=s=>"（現在 のれん分け "+s.prestigeCount+" / 1回 ・ 通算売上 "+fmt(s.lifetimeAll)+" / ¥600,000,000）";
-UPS[14].prog=s=>"（現在 今期売上 "+fmt(s.lifetimeRun)+" / ¥500,000,000）";
+UPS[0].prog=s=>"（現在 今期売上 "+fmt(s.lifetimeRun)+" / ¥50,000）";
+UPS[1].prog=s=>"（現在 "+s.totalServes+" / 300皿）";
+UPS[2].prog=s=>"（現在 "+s.gens[0]+" / 10人）";
+UPS[3].prog=s=>"（現在 "+s.totalServes+" / 1,500皿）";
+UPS[4].prog=s=>"（現在 通算売上 "+fmt(s.lifetimeAll)+" / ¥100,000,000）";
+UPS[5].prog=s=>"（現在 "+s.gens[4]+" / 8つ）";
+UPS[6].prog=s=>"（現在 "+s.gens[1]+" / 10つ）";
+UPS[7].prog=s=>"（現在 "+s.totalServes+" / 8,000皿）";
+UPS[8].prog=s=>"（現在 のれん分け "+s.prestigeCount+" / 2回）";
+UPS[9].prog=s=>"（現在 "+s.totalServes+" / 15,000皿）";
+UPS[10].prog=s=>"（現在 "+s.gens[4]+" / 12つ）";
+UPS[11].prog=s=>"（現在 "+s.totalServes+" / 25,000皿）";
+UPS[12].prog=s=>"（現在 通算売上 "+fmt(s.lifetimeAll)+" / ¥1000兆）";
+UPS[13].prog=s=>"（現在 注文 "+ordersDoneCount(s)+" / 10件）";
+UPS[14].prog=s=>"（現在 注文 "+ordersDoneCount(s)+" / 15件）";
 const PSHOP = [
-  { name:"名店の手際",       desc:"提供の秒分上乗せが+0.1秒増える（恒常・最大5回）", cost:3,  max:5, kind:"tapsec", sec:0.1 },
-  { name:"常連の口コミ網",   desc:"オフライン収入の効率が+20%される（恒常・最大3回、3回目は+10%で最大100%）", cost:4, max:3, kind:"offline", add:0.2 },
-  { name:"開店資金の蓄え",   desc:"のれん分け直後の所持金が+¥300,000される（恒常・大口と重なる）",               cost:3,  max:1, kind:"startmoney", amt:300000 },
-  { name:"仕入れの目利き",   desc:"設備の価格が10%安くなる（恒常）",                             cost:6,  max:1, kind:"discount", pct:0.1 },
-  { name:"評判の蓄積",       desc:"全収入が+5%される（恒常・最大5回、回を重ねるほど高くなる）",   cost:[4,5,6,7,8], max:5, kind:"globalpct", pct:0.05 },
-  { name:"開店資金の大口",   desc:"のれん分け直後の所持金が+¥1,000,000される（恒常・蓄えと重なる）", cost:10, max:1, kind:"startmoney", amt:1000000 },
-  { name:"仕入れの目利き（上位）", desc:"設備の価格がさらに15%安くなる（恒常・目利きと重なって効く）", cost:12,  max:1, kind:"discount", pct:0.15 }
+{ name:"名店の手際", desc:"「料理を出す」の秒分上乗せが+0.1秒増える（恒常・2段まで）", cost:[5,8], max:2, kind:"tapsec", sec:0.1},
+{ name:"常連の口コミ網", desc:"オフライン収入の効率が+10%され、上限時間が+2時間される（恒常・4段まで）", cost:[1,2,4,6], max:4, kind:"offline2"},
+{ name:"開店資金の蓄え", desc:"のれん分け直後の所持金が増える（前周の最終ペース×3秒分×段数）（恒常・3段まで）", cost:[2,4,7], max:3, kind:"startmoney2"},
+{ name:"仕入れの目利き", desc:"設備の価格が安くなる（段ごと: 4%引き・最大12%）（恒常・3段まで）", cost:[2,4,6], max:3, kind:"discount2"},
+{ name:"評判の蓄積", desc:"全収入が+5%される（恒常・4段まで）", cost:[1,2,4,6], max:4, kind:"globalpct", pct:0.05},
+{ name:"秒分ボタンの達人", desc:"秒分ボタンの回復が10%短くなり、1段目と3段目でため置きが+1される（恒常・4段まで）", cost:[1,2,4,6], max:4, kind:"secboost"},
+{ name:"常連の紹介", desc:"注文の絆報酬が+25%され、料理が出る速さが+15%される（恒常・4段まで）", cost:[1,2,4,6], max:4, kind:"orderboost"}
 ];
 const ACHS = [
   { kind:"sales",    at:100000,    label:"総売上 ¥100,000" },
@@ -406,7 +410,7 @@ const ACHS = [
   { kind:"serves",   at:4000,  label:"通算で4,000皿出す" },
   { kind:"serves",   at:8000,  label:"通算で8,000皿出す" },
   { kind:"flag", flag:"gensAll", label:"設備を全種類そろえる（同じ店で）" },
-  { kind:"flag", flag:"upsAll",  label:"こだわり強化を全部入れる（同じ店で）" },
+  { kind:"flag", flag:"upsAll",  label:"こだわり強化を全部入れる" },
   { kind:"pshopAll", label:"名声ショップを全品そろえる" }
 ];
 function achDone(a, s){
@@ -451,12 +455,13 @@ const DISHES = [
   { name:"締めのお茶漬け", f:1.8,   comments:["「さらさらっと、いい締めだ」","「出汁が優しい…寝る前に最高」"] }
 ];
 const DISH_COUNT_BY_RANK = [2, 3, 4, 5, 6, 7, 8, 10];
-function dishCount(s){ return DISH_COUNT_BY_RANK[Math.min(runIdxOf(s), DISH_COUNT_BY_RANK.length-1)]; }
+function dishCount(s){ return Math.min(DISHES.length, 2 + upsOwnedCount(s)); }
 function unlockedDishes(s){ return DISHES.slice(0, dishCount(s)); }
 function gradeIdxOf(s, di){
   const n=(s.dishServes && s.dishServes[di])||0;
   let g=0; for(let i=0;i<GRADE_THRESH.length;i++) if(n>=GRADE_THRESH[i]) g=i;
-  return g;
+  const cap=2 + ((s.ups&&s.ups[7])?1:0) + ((s.ups&&s.ups[11])?1:0);
+  return Math.min(g, cap);
 }
 function dishAvgFactor(s){
   const ds=unlockedDishes(s); let sum=0;
@@ -537,49 +542,68 @@ const ORDER_TEXTS = [
   "紳士が野菜炒めの火入れを『完璧』と評した",
   "紳士がオムライスに一輪の花を添えて帰った。『完璧な店だ』"
 ];
+const ORDER_PERM = [0,1,2,3,4,5,6,7,8,9,0,2,4,6,8,1,3,5,7,9];
 const ORDERS = [];
-REGULARS.forEach((r, ri)=>{ for(let k=0;k<4;k++){ ORDERS.push({ reg:ri, k:k, dish:(2*ri+3*k)%10, gradeReq:k+1, count:Math.round((90+260*k+60*ri)*(1+0.35*k)), text:ORDER_TEXTS[ri*4+k] }); } });
+REGULARS.forEach((r, ri)=>{ for(let k=0;k<4;k++){ const slot=ri*4+k; ORDERS.push({ reg:ri, k:k, dish:ORDER_PERM[slot], gradeReq:k+1, count:Math.round(180*Math.pow(1.34, slot)), text:ORDER_TEXTS[slot] }); } });
+const KIWAME_COSTS = [3130868506147780296704,44112555928919526604800,96733861957213356032000,1964677983025277943414784,5053212498790856402141184,108454364568275357494411264,291994475537793058611396608,4721725690092244289435205632,15208165301669725276892823552,249379376896585768720131948544,800466964671209834225831247872,10663926933089129334413453164544,35742860080884642369827334258688,578620853040456661702466653388800,1960308101665742800338670875312128];
+function buyKiwame(s,i){
+if(!s.finaleDone ||!(s.ups&&s.ups[i]) || (s.kiwame&&s.kiwame[i]) || s.money < KIWAME_COSTS[i]) return false;
+s.money-=KIWAME_COSTS[i]; s.kiwame=s.kiwame||UPS.map(()=>false); s.kiwame[i]=true; s.pendingUnits=(s.pendingUnits||0)+1;
+return true;
+}
 const BSHOP = [
   { name:"評判の呼び込み", desc:"料理が出る速さ（客足）が1.4倍になる（最大3回）", max:3, costs:[2,4,7] },
-  { name:"大入りの口上", desc:"大入り（30秒分）の待ち時間が30秒短くなる（最大4回、300秒→180秒）", max:4, costs:[1,2,3,4] },
+  { name:"大入りの口上", desc:"大入り（30秒分）のため置きが+1増える（最大2回）", max:2, costs:[2,5] },
   { name:"二皿同時の手際", desc:"「料理を出す」で一度に出る皿が+1増える（注文と腕前が速く進む・最大2回）", max:2, costs:[3,6] }
 ];
 const EVENTS_EARLY = [
-  { text:"初めての客が「いい店見つけた」と笑った", mult:90 },
-  { text:"通りすがりの学生が、店構えの写真を撮っていった", mult:60 },
-  { text:"仕入れ先が、いい肉をおまけしてくれた", mult:90 },
-  { text:"雨の夜。傘を忘れた客でカウンターが埋まった", mult:150 }
+  { text:"初めての客が「いい店見つけた」と笑った", mult:30 },
+  { text:"通りすがりの学生が、店構えの写真を撮っていった", mult:20 },
+  { text:"仕入れ先が、いい肉をおまけしてくれた", mult:30 },
+  { text:"雨の夜。傘を忘れた客でカウンターが埋まった", mult:50 }
 ];
 const EVENTS_REG = [
-  { text:"常連さんが友達を連れてきた！", mult:120 },
-  { text:"深夜タクシーの運転手さん御一行が来店", mult:180 },
-  { text:"常連さんが「今日も最高だった」と置き手紙", mult:60 }
+  { text:"常連さんが友達を連れてきた！", mult:40 },
+  { text:"深夜タクシーの運転手さん御一行が来店", mult:60 },
+  { text:"常連さんが「今日も最高だった」と置き手紙", mult:20 }
 ];
 function capGain(s, raw){
-  const cap = Math.min(s.money*0.15, perSec(s)*240) + perSec(s)*10 + 300;
-  return Math.max(300, Math.min(raw, cap));
+const cap = Math.min(s.money*0.15, perSec(s)*240) + perSec(s)*10 + 300;
+return Math.max(300, Math.min(raw, cap));
+}
+function nextTargetCost(s){
+for(let i=0;i<UPS.length;i++) if(!(s.ups&&s.ups[i])) return UPS[i].cost;
+if(s.finaleDone){ for(let i=0;i<KIWAME_COSTS.length;i++) if(!(s.kiwame&&s.kiwame[i])) return KIWAME_COSTS[i];}
+return null;
+}
+function eventCapGain(s, raw){
+const t=nextTargetCost(s);
+if(t==null) return capGain(s, raw);
+const rem=t - s.money;
+if(rem<=0) return capGain(s, raw);
+return Math.max(300, Math.min(raw, rem*0.15));
 }
 function choiceGain(s, raw){
   // 選択イベントは「自分で選んだ結果」なので、通常イベントより上限をずっと緩くする
-  return Math.max(0, Math.min(raw, perSec(s)*900 + 50000));
+  return Math.max(0, Math.min(raw, perSec(s)*150 + 50000));
 }
-const BIG_EVENT = { text:"📸 料理の写真がSNSでバズった！！", mult:360 };
+const BIG_EVENT = { text:"📸 料理の写真がSNSでバズった！！", mult:120 };
 const CHOICES = [
   { title:"📦 大口の注文", text:"近所の工事現場の親方:「今夜、30人分の弁当を頼めないか？ 割増しは払う。ただし量が多いから、失敗すると材料が無駄になる」", cond:null,
     a:{ label:"受ける（気合で作る）",
-        hint:s=>"成功85%: +"+fmt(choiceGain(s, perSec(s)*140))+" ／ 失敗15%: -"+fmt(Math.min(s.money, perSec(s)*120))+"（材料と手間が無駄に）",
-        run:s=> (Math.random()<0.85 ? { amt:perSec(s)*140, cost:0, msg:"親方御一行が大満足！ 口コミで広がった" }
-                                    : { amt:0, cost:perSec(s)*120, msg:"注文が想定より多く、材料を使い切ってしまった…" }) },
+        hint:s=>"成功85%: +"+fmt(choiceGain(s, perSec(s)*30))+" ／ 失敗15%: -"+fmt(Math.min(s.money, perSec(s)*30))+"（材料と手間が無駄に）",
+        run:s=> (Math.random()<0.85 ? { amt:perSec(s)*30, cost:0, msg:"親方御一行が大満足！ 口コミで広がった" }
+                                    : { amt:0, cost:perSec(s)*30, msg:"注文が想定より多く、材料を使い切ってしまった…" }) },
     b:{ label:"丁寧に断る",
-        hint:s=>"確実に +"+fmt(choiceGain(s, perSec(s)*60)),
-        run:s=>({ amt:perSec(s)*60, cost:0, msg:"「無理しない店は信用できる」と常連さんが頷いた" }) } },
+        hint:s=>"確実に +"+fmt(choiceGain(s, perSec(s)*15)),
+        run:s=>({ amt:perSec(s)*15, cost:0, msg:"「無理しない店は信用できる」と常連さんが頷いた" }) } },
   { title:"📺 テレビ取材の申し込み", text:"深夜番組のスタッフ:「密着取材させてほしい。当たれば行列は伸びるけど、編集で変に切り取られることもある」", cond:null,
     a:{ label:"受ける",
-        hint:s=>"60%: +"+fmt(choiceGain(s, perSec(s)*200))+" ／ 40%: -"+fmt(Math.min(s.money, perSec(s)*50))+"（変な切り取られ方をして客足が遠のく）",
-        run:s=> (Math.random()<0.6 ? { amt:perSec(s)*200, cost:0, msg:"放送後、行列がぐんと伸びた！" } : { amt:0, cost:perSec(s)*50, msg:"放送で変に切り取られて、しばらく客足が遠のいた…" }) },
+        hint:s=>"60%: +"+fmt(choiceGain(s, perSec(s)*45))+" ／ 40%: -"+fmt(Math.min(s.money, perSec(s)*15))+"（変な切り取られ方をして客足が遠のく）",
+        run:s=> (Math.random()<0.6 ? { amt:perSec(s)*45, cost:0, msg:"放送後、行列がぐんと伸びた！" } : { amt:0, cost:perSec(s)*15, msg:"放送で変に切り取られて、しばらく客足が遠のいた…" }) },
     b:{ label:"断る（今の空気を守る）",
-        hint:s=>"確実に +"+fmt(choiceGain(s, perSec(s)*70)),
-        run:s=>({ amt:perSec(s)*70, cost:0, msg:"静かな名店の評判が少し広がった" }) } },
+        hint:s=>"確実に +"+fmt(choiceGain(s, perSec(s)*15)),
+        run:s=>({ amt:perSec(s)*15, cost:0, msg:"静かな名店の評判が少し広がった" }) } },
   { title:"🥩 仕入れのまとめ買い", text:"源さん:「いい豚肉が大量に入ったよ。所持金の一部を仕入れに回せば、当たれば大きく増える。外れても半分は戻る。どうする？」", cond:s=>s.lifetimeRun>=8000000, minMoneyRatio:60,
     a:{ label:"買う（所持金の50%を仕入れに回す）",
         hint:s=>{ const stake=Math.floor(s.money*0.5); return "支払い "+fmt(stake)+" ／ 75%: +"+fmt(choiceGain(s, stake*3.5))+" ／ 25%: +"+fmt(choiceGain(s, stake*0.5))+"（ハズレの部位で、回した分の半分だけ戻る）"; },
@@ -591,11 +615,11 @@ const CHOICES = [
         run:s=>({ amt:perSec(s)*30, cost:0, msg:"いつも通りの仕入れで堅実に回した" }) } },
   { title:"🎂 常連さんの誕生日", text:"佐藤さんが今日誕生日らしい。カウンターの端で、小さく祝われている", cond:s=>s.lifetimeRun>=50000,
     a:{ label:"一皿ごちそうする",
-        hint:s=>"支払い "+fmt(Math.min(s.money, perSec(s)*60))+" ／ 佐藤さんの物語が1つ進む ＋ "+fmt(choiceGain(s, perSec(s)*40))+"（物語が尽きている時は "+fmt(choiceGain(s, perSec(s)*200))+"）",
-        run:s=>({ amt:perSec(s)*40, cost:Math.min(s.money, perSec(s)*60), story:0, msg:"佐藤さんが嬉しそうに同僚へ電話した" }) },
+        hint:s=>"支払い "+fmt(Math.min(s.money, perSec(s)*20))+" ／ 佐藤さんの物語が1つ進む ＋ "+fmt(choiceGain(s, perSec(s)*12))+"（物語が尽きている時は "+fmt(choiceGain(s, perSec(s)*45))+"）",
+        run:s=>({ amt:perSec(s)*12, cost:Math.min(s.money, perSec(s)*20), story:0, msg:"佐藤さんが嬉しそうに同僚へ電話した" }) },
     b:{ label:"声だけかける",
-        hint:s=>"確実に +"+fmt(choiceGain(s, perSec(s)*25)),
-        run:s=>({ amt:perSec(s)*25, cost:0, msg:"「ありがとう」と笑顔が返ってきた" }) } }
+        hint:s=>"確実に +"+fmt(choiceGain(s, perSec(s)*8)),
+        run:s=>({ amt:perSec(s)*8, cost:0, msg:"「ありがとう」と笑顔が返ってきた" }) } }
 ];
 
 // ===== 状態 =====
@@ -607,7 +631,8 @@ function newState(){
     ascending:false, pendingFame:0, flags:{ gensAll:false, upsAll:false },
     dishServes:DISHES.map(()=>0), serveFrac:0, bond:0, bondShop:BSHOP.map(()=>0),
     orderStage:REGULARS.map(()=>0), orderProg:REGULARS.map(()=>0), focusReg:-1,
-    cd10At:0, cd30At:0, goalReached:false, finaleDone:false };
+    sec10:{n:3,t:0}, sec30:{n:3,t:0}, runUps:0, runOrders:0, heatUntil:0, storyAck:0, goalReached:false, finaleDone:false,
+ pendingUnits:0, kiwame:UPS.map(()=>false), runCapK:0, capAnnounced:false, nextStartMoney:0};
 }
 let S = newState();
 let buyMode = "1";
@@ -635,15 +660,21 @@ function fmtSec(sec){
 }
 function genUpMult(s,i){
   let m=1;
-  for(let u=0;u<UPS.length;u++) if(s.ups[u] && UPS[u].kind==="gen" && UPS[u].idx===i) m*=UPS[u].mult;
+  for(let u=0;u<UPS.length;u++) if(s.ups[u] && UPS[u].kind==="gen" && (UPS[u].idxs||[]).includes(i)) m*=UPS[u].mult;
   return m;
 }
 
 // ===== 経済計算（検証可能な純粋ロジック） =====
+function discountOf(s){ const t=(s&&s.fameShop&&s.fameShop[3])||0; return 0.04*Math.min(t,3);}
+function activeIncome(s){ return perSec(s) + 3*serveValue(s);}
+function startMoneyOf(s){ return 0;}
+function upsOwnedCount(s){ return (s.ups||[]).filter(x=>x).length;}
+function kiwameOwnedCount(s){ return (s.kiwame||[]).filter(x=>x).length;}
+function capN(s){ return 25 + 12*((s&&s.runCapK)||0);}
 function genCost(i, owned, amt, s){
   let total=0, cur=GENS[i].cost*Math.pow(COST_GROWTH, owned);
   for(let k=0;k<amt;k++){ total+=cur; cur*=COST_GROWTH; }
-  if(s && s.fameShop){ if(s.fameShop[3]>0) total*=0.9; if(s.fameShop[6]>0) total*=0.85; }
+  if(s) total *= 1 - discountOf(s);
   return Math.ceil(total);
 }
 const MILE_STEPS = { 5:2, 10:2, 15:1.5, 25:4/3, 50:2, 100:2 };
@@ -655,17 +686,17 @@ function mileMult(owned){
 function achCount(s){ return ACHS.filter(a=>achDone(a,s)).length; }
 function globalMult(s){
   let m = 1 + 0.05*achCount(s);
-  m *= Math.pow(1.07, runIdxOf(s));
-  if(s.lifetimeRun>100000000) m *= Math.pow(100000000/s.lifetimeRun, 1.25);
+  m *= 1 + 0.05*rankIdxOf(s);
   if(s.fameShop) m *= 1 + 0.05*(s.fameShop[4]||0);
-  m *= 1 + 0.20*(s.fameTotal||0);
+  m *= Math.pow(1.2, s.fameTotal||0);
+ const kw=(s.kiwame||[]).filter(x=>x).length; if(kw) m *= Math.pow(4, kw);
   if(s.orderStage) m *= 1 + 0.05*s.orderStage.filter(x=>x>=4).length;
   for(let i=0;i< UPS.length;i++) if(s.ups[i] && UPS[i].kind==="global") m*=UPS[i].mult;
   return m;
 }
 function genMult(s,i){
   let m=mileMult(s.gens[i]);
-  for(let u=0;u<UPS.length;u++) if(s.ups[u] && UPS[u].kind==="gen" && UPS[u].idx===i) m*=UPS[u].mult;
+  for(let u=0;u<UPS.length;u++) if(s.ups[u] && UPS[u].kind==="gen" && (UPS[u].idxs||[]).includes(i)) m*=UPS[u].mult;
   return m;
 }
 function perSec(s){
@@ -679,14 +710,9 @@ function tapSec(s){
   if(s.fameShop) sec += (s.fameShop[0]||0) * 0.1;
   return sec;
 }
-function offlineRate(s){
-  const lvl=(s.fameShop && s.fameShop[1])||0;
-  return 0.5 + 0.2*Math.min(lvl,2) + (lvl>=3 ? 0.1 : 0);
-}
+function offlineRate(s){ return 0.10 + 0.10*((s.fameShop && s.fameShop[1])||0); }
 function serveValue(s){
-  let m=1;
-  for(let i=0;i< UPS.length;i++) if(s.ups[i] && UPS[i].kind==="serve") m*=UPS[i].mult;
-  return 100 * dishAvgFactor(s) * globalMult(s) * m + perSec(s) * tapSec(s);
+  return 100 * dishAvgFactor(s) * globalMult(s) + perSec(s) * tapSec(s);
 }
 function earn(s, amt){
   s.money+=amt; s.lifetimeRun+=amt; s.lifetimeAll+=amt;
@@ -695,34 +721,39 @@ function prestigeBase(s){
   return 10000000 * Math.pow(1.6, Math.min(s.prestigeCount||0, 8));
 }
 function prestigeGain(s){
-  const base=prestigeBase(s);
-  if(s.lifetimeRun < base) return 0;
-  return Math.floor(4*Math.sqrt(s.lifetimeRun/base));
+if(!(s.pendingUnits>0)) return 0;
+return Math.min(6, 3*s.pendingUnits);
 }
-function doServe(s, dishIdx){
-  earn(s, serveValue(s)); s.serves++; s.totalServes=(s.totalServes||0)+1;
+function doServe(s, dishIdx, factor){
+  const hv=(s.heatUntil && Date.now()<s.heatUntil) ? 2 : 1;
+  earn(s, serveValue(s) * hv * (factor||1)); s.serves++; s.totalServes=(s.totalServes||0)+1;
   const n=1+((s.bondShop&&s.bondShop[2])||0);
   for(let k=0;k<n;k++) serveDish(s, dishIdx);
 }
 function buyGen(s,i,amt){
-  const c=genCost(i, s.gens[i], amt, s);
+amt = Math.min(amt, capN(s) - s.gens[i]);
+if(amt<=0) return false;
+const c=genCost(i, s.gens[i], amt, s);
   if(s.money < c) return false;
   s.money-=c; s.gens[i]+=amt;
   if(s.gens.every(n=>n>=1)){ s.flags=s.flags||{gensAll:false,upsAll:false}; s.flags.gensAll=true; }
   return true;
 }
 function buyUp(s,i){
-  if(s.ups[i] || s.money < UPS[i].cost || !UPS[i].cond(s)) return false;
-  s.money-=UPS[i].cost; s.ups[i]=true;
+if(s.ups[i] || s.money < UPS[i].cost ||!UPS[i].cond(s)) return false;
+s.money-=UPS[i].cost; s.ups[i]=true; s.runUps=(s.runUps||0)+1; s.pendingUnits=(s.pendingUnits||0)+1;
   if(s.ups.every(x=>x)){ s.flags=s.flags||{gensAll:false,upsAll:false}; s.flags.upsAll=true; }
   return true;
 }
 function beginPrestige(s){
-  const g=prestigeGain(s);
-  if(g<=0 || s.ascending) return 0;
-  s.fameTotal=(s.fameTotal||0)+g; s.prestigePoints=s.prestigePoints+g;
-  s.pendingFame=g; s.ascending=true;
-  return g;
+const g=prestigeGain(s);
+if(g<=0 || s.ascending) return 0;
+const tier2=(s.fameShop&&s.fameShop[2])||0;
+s.nextStartMoney = Math.floor(activeIncome(s) * 3 * tier2);
+s.pendingUnits=(s.pendingUnits||0) - g/3;
+s.fameTotal=(s.fameTotal||0)+g; s.prestigePoints=s.prestigePoints+g;
+s.pendingFame=g; s.ascending=true;
+return g;
 }
 function startNewRun(s){
   if(!s.ascending) return false;
@@ -740,7 +771,14 @@ function startNewRun(s){
   ns.orderProg=(s.orderProg||REGULARS.map(()=>0)).slice();
   ns.focusReg=(typeof s.focusReg==="number")?s.focusReg:-1;
   ns.goalReached=!!s.goalReached; ns.finaleDone=!!s.finaleDone;
-  ns.money = (ns.fameShop[2]>0 ? 300000 : 0) + (ns.fameShop[5]>0 ? 1000000 : 0);
+ ns.pendingUnits=s.pendingUnits||0; ns.kiwame=(s.kiwame||UPS.map(()=>false)).slice();
+ ns.runCapK = upsOwnedCount(s) + kiwameOwnedCount(s);
+ ns.capAnnounced=!!s.capAnnounced;
+  ns.money = s.nextStartMoney||0; ns.nextStartMoney = 0;
+  ns.ups=(s.ups||UPS.map(()=>false)).slice();
+  ns.runUps=0; ns.runOrders=0;
+  ns.sec10=s.sec10||{n:3,t:0}; ns.sec30=s.sec30||{n:3,t:0};
+  ns.storyAck=s.storyAck||0;
   Object.assign(s, ns);
   return true;
 }
@@ -751,18 +789,14 @@ function buyPshop(s,i){
   if(lvl >= it.max || s.prestigePoints < cst) return false;
   s.prestigePoints-=cst; s.fameShop[i]=lvl+1; return true;
 }
-function rankIdxOf(s){
-  let idx=0;
-  for(let i=0;i<RANKS.length;i++) if(s.lifetimeAll>=RANKS[i].at) idx=i;
-  return idx;
-}
+function rankIdxOf(s){ return Math.min(7, Math.floor(upsOwnedCount(s)/2)); }
 function runIdxOf(s){
   let idx=0;
   for(let i=0;i<RANKS.length;i++) if(s.lifetimeRun>=RANKS[i].at) idx=i;
   return idx;
 }
 function rankOf(s){
-  const idx=runIdxOf(s);
+  const idx=rankIdxOf(s);
   return { rank:RANKS[idx], next:RANKS[idx+1]||null, idx:idx };
 }
 function metaTitle(s){
@@ -785,18 +819,19 @@ function fmtTime(sec){
 
 // ===== 第2幕エンジン（皿・注文・秒分ボタン） =====
 function totalGens(s){ return s.gens.reduce((a,b)=>a+b,0); }
-function act2Unlocked(s){ return (s.fameTotal||0)>=10; }
-function servableDishCount(s){ return act2Unlocked(s) ? DISHES.length : dishCount(s); }
+function act2Unlocked(s){ return !!(s.ups && s.ups[3]); }
+function servableDishCount(s){ return dishCount(s); }
 function serveRate(s){
   let r=Math.min(1.5 + 0.06*totalGens(s), 8);
   r *= Math.pow(1.4, (s.bondShop&&s.bondShop[0])||0);
+  r *= Math.pow(1.15, (s.fameShop&&s.fameShop[6])||0);
   return r;
 }
 function activeOrder(s, ri){ const st=(s.orderStage||[])[ri]||0; if(st>=4) return null; return ORDERS[ri*4+st]; }
 function ordersDoneCount(s){ return (s.orderStage||[]).reduce((a,b)=>a+Math.min(b,4),0); }
 function pickServeDish(s){
   const needs=[];
-  REGULARS.forEach((r,ri)=>{ const o=activeOrder(s,ri); if(o && (s.metRegs||[]).includes(ri)) needs.push({ dish:o.dish, w:(s.focusReg===ri?3:1) }); });
+  REGULARS.forEach((r,ri)=>{ const o=activeOrder(s,ri); if(o && o.dish<dishCount(s) && (s.metRegs||[]).includes(ri)) needs.push({ dish:o.dish, w:(s.focusReg===ri?3:1) }); });
   let pool;
   if(needs.length) pool=needs;
   else { pool=[]; const n=servableDishCount(s); for(let d=0;d<n;d++) pool.push({ dish:d, w:1 }); }
@@ -812,6 +847,7 @@ function serveDish(s, di){
   s.dishServes[di]=(s.dishServes[di]||0)+1;
   const after=gradeIdxOf(s, di);
   if(after>before) log("✨ 料理「"+DISHES[di].name+"」の腕が上がった ― "+GRADE_NAMES[after]+"（単価+10%）");
+  if(!act2Unlocked(s)) return;
   REGULARS.forEach((r,ri)=>{
     if(!((s.metRegs||[]).includes(ri))) return;
     const o=activeOrder(s,ri);
@@ -824,9 +860,10 @@ function serveDish(s, di){
 }
 function completeOrder(s, ri, o){
   s.orderStage[ri]++; s.orderProg[ri]=0;
-  const reward=1+o.k;
+  s.runOrders=(s.runOrders||0)+1;
+  const reward=Math.max(1, Math.round((1+o.k+Math.floor((ri*4+o.k)/5)) * Math.pow(1.25, (s.fameShop&&s.fameShop[6])||0)));
   s.bond=(s.bond||0)+reward;
-  const burst=perSec(s)*30;
+  const burst=perSec(s)*45;
   if(burst>0) earn(s, burst);
   log("🍽 注文完了！ "+o.text+"（絆+"+reward+(burst>0?" ／ お祝いに "+fmt(burst):"")+"）");
   if(s.orderStage[ri]>=4) log("💐 "+REGULARS[ri].name+"の注文を全て完走！ 恩返しで全収入+5%（恒久）");
@@ -838,14 +875,40 @@ function serveTick(s, dt){
   let guard=0;
   while(s.serveFrac>=1 && guard<300){ s.serveFrac-=1; serveDish(s, pickServeDish(s)); guard++; }
 }
-function oairiCD(s){ return 300 - 30*((s.bondShop&&s.bondShop[1])||0); }
+function secStockMax(s, which){
+  let mx=3 + (((s.fameShop&&s.fameShop[5])||0)>=1?1:0) + (((s.fameShop&&s.fameShop[5])||0)>=3?1:0);
+  if(which===30) mx += (s.bondShop&&s.bondShop[1])||0;
+  return mx;
+}
+function secCD(s, base){ return base * ((s.ups&&s.ups[5])?0.5:1) * Math.pow(0.9, (s.fameShop&&s.fameShop[5])||0); }
+function secRegen(s){
+  const now=Date.now();
+  [["sec10",10,60],["sec30",30,300]].forEach(function(e){
+    const key=e[0], which=e[1], base=e[2];
+    const b=s[key]||(s[key]={n:secStockMax(s,which),t:0});
+    const mx=secStockMax(s,which);
+    if(b.n>mx) b.n=mx;
+    if(b.n<mx){ if(!b.t) b.t=now+secCD(s,base)*1000; if(now>=b.t){ b.n++; b.t=(b.n<mx)? now+secCD(s,base)*1000 : 0; } }
+    else b.t=0;
+  });
+}
+function secUse(s, key, which){
+  secRegen(s);
+  const b=s[key]; if(!b || b.n<=0) return false;
+  b.n--; if(!b.t) b.t=Date.now()+secCD(s, which===10?60:300)*1000;
+  return true;
+}
 function useSec10(s){
-  if(perSec(s)<=0 || Date.now()<(s.cd10At||0)) return false;
-  earn(s, perSec(s)*10); s.cd10At=Date.now()+60000; afterEarn(); return true;
+  if(perSec(s)<=0) return false;
+  if(!secUse(s,"sec10",10)) return false;
+  earn(s, perSec(s)*((s.ups&&s.ups[9])?20:10)); afterEarn(); return true;
 }
 function useOoiri(s){
-  if(!act2Unlocked(s) || perSec(s)<=0 || Date.now()<(s.cd30At||0)) return false;
-  earn(s, perSec(s)*30); s.cd30At=Date.now()+oairiCD(s)*1000; afterEarn(); return true;
+  if(!act2Unlocked(s) || perSec(s)<=0) return false;
+  if(!secUse(s,"sec30",30)) return false;
+  earn(s, perSec(s)*30);
+  if(s.ups&&s.ups[13]) s.heatUntil=Date.now()+10000;
+  afterEarn(); return true;
 }
 function buyBshop(s,i){
   const it=BSHOP[i]; if(!it) return false;
@@ -853,10 +916,12 @@ function buyBshop(s,i){
   if(lvl>=it.max || (s.bond||0)<it.costs[lvl]) return false;
   s.bond-=it.costs[lvl]; s.bondShop[i]=lvl+1; return true;
 }
+function finaleCost(s){ return Math.floor(perSec(s)*600); }
 function doFinale(s){
-  if(s.finaleDone || ordersDoneCount(s)<20) return false;
-  if(s.money<200000000 || (s.bond||0)<15) return false;
-  s.money-=200000000; s.bond-=15; s.finaleDone=true;
+  if(s.finaleDone || !(s.ups&&s.ups[14]) || ordersDoneCount(s)<20) return false;
+  const fc=finaleCost(s);
+  if(s.money<fc || (s.bond||0)<15) return false;
+  s.money-=fc; s.bond-=15; s.finaleDone=true;
   if(!s.cleared){ s.cleared=true; s.clearedAt=Math.floor(s.playSec); }
   log("🎉 常連全員に特別メニューを出した！ まよなか食堂、真のクリア！");
   showClear();
@@ -894,6 +959,18 @@ GENS.forEach((g,i)=>{
     }
   });
   gensEl.appendChild(row);
+});
+const kiwameEl=$("kiwame");
+const kiwameRowEls=[];
+UPS.forEach((u,i)=>{
+const row=document.createElement("div"); row.className="row";
+row.innerHTML='<div class="info"><div class="name"></div><div class="desc"></div></div><button class="buy"></button>';
+row.querySelector(".name").textContent=u.name+"";
+row.querySelector(".desc").textContent="極めることで全収入が4倍 ― 極めた分だけ、暖簾分けで名声も得られる";
+row.querySelector(".buy").addEventListener("click", ()=>{
+if(buyKiwame(S,i)){ log("極めた！「"+u.name+"」が極みに達した（全収入×4）"); render(); save();}
+});
+kiwameEl.appendChild(row); kiwameRowEls.push(row);
 });
 const upsEl=$("ups");
 const upsRowEls=[];
@@ -1003,26 +1080,32 @@ function render(){
   $("stPerSec").textContent=fmt(perSec(S))+"/秒";
   $("stServe").textContent=fmt(serveValue(S));
   $("stPrestige").textContent=(S.fameTotal||0)+"（使える名声 "+S.prestigePoints+"）";
+   $("statFameBox").style.display = ((S.prestigeCount||0)>0 || (S.pendingUnits||0)>0 || (S.fameTotal||0)>0)? "": "none";
   const r=rankOf(S);
-  $("progRank").textContent="今期ランク: "+r.rank.name+((S.cleared||S.legacyClear)?" 🏆":"");
+  $("progRank").textContent="店のランク: "+r.rank.name+"（こだわり "+upsOwnedCount(S)+" / 15）"+((S.cleared||S.legacyClear)?" 🏆":"");
   if(r.next){
-    const pct=Math.max(0, Math.min(100, Math.floor((S.lifetimeRun - r.rank.at)/(r.next.at - r.rank.at)*100)));
+    const pct=(upsOwnedCount(S)%2)*50;
     $("progBar").style.width=pct+"%";
-    $("progNext").textContent="次のランク「"+r.next.name+"」まで あと "+fmt(r.next.at - S.lifetimeRun);
+    $("progNext").textContent="次のランク「"+r.next.name+"」まで こだわり あと "+(2-(upsOwnedCount(S)%2))+" 個";
   } else {
     $("progBar").style.width="100%";
     $("progNext").textContent="最高ランク到達";
   }
+  const nUpIdx=UPS.findIndex((u,i)=>!S.ups[i]);
+  const estRate=perSec(S)+serveValue(S)*2;
+  const minsTo=(cost)=> estRate>0 ? Math.max(0,(cost-S.money)/estRate/60) : Infinity;
   $("progGoal").textContent = S.cleared ? "🏆 クリア済み（"+fmtTime(S.clearedAt)+"で達成）"
     : S.legacyClear ? "🏆 クリア済み（旧バージョンの条件）"
-    : !act2Unlocked(S) ? "次の目標: 名声を累計10集めて第2幕へ（現在 "+(S.fameTotal||0)+" / 10）"
+    : nUpIdx>=0 && !UPS[nUpIdx].cond(S) ? "次の目標: こだわり『"+UPS[nUpIdx].name+"』の解放 ― "+UPS[nUpIdx].condText+(UPS[nUpIdx].prog?UPS[nUpIdx].prog(S):"")
+    : nUpIdx>=0 ? "次の目標: こだわり『"+UPS[nUpIdx].name+"』"+(S.money>=UPS[nUpIdx].cost ? " が買える！" : " まで あと約"+fmtSec(Math.max(1,Math.round(minsTo(UPS[nUpIdx].cost)*60)))+"（いまのペース）")
     : ordersDoneCount(S)<20 ? "次の目標: 常連の注文 あと "+(20-ordersDoneCount(S))+" 件（「注文」タブ）"
-    : "次の目標: 最終イベント ― 特別メニューを出そう（「注文」タブ）";
-  $("metaLine").textContent="通算階位: "+metaTitle(S)+"（のれん分け"+S.prestigeCount+"回・通算売上"+fmt(S.lifetimeAll)+"）"+" ランク倍率×"+Math.pow(1.07, runIdxOf(S)).toFixed(2);
-  const capF = S.lifetimeRun>100000000 ? Math.pow(100000000/S.lifetimeRun, 1.25) : 1;
-  $("capLine").textContent = capF>=1 ? "この店の商圏: 今期 "+fmt(S.lifetimeRun)+" / ¥1億（超えると伸びが鈍る）"
-    : "この店の商圏: 限界を超過中（収入 −"+Math.round((1-capF)*100)+"%）／ のれん分けで新しい商圏へ";
-  const runIdx=runIdxOf(S);
+    : !S.finaleDone ? "次の目標: 最終イベント ― 特別メニューを出そう（「注文」タブ）"
+    : (S.kiwame||[]).every(x=>x) && (S.pendingUnits||0)<=0? "🎊 全てのこだわりを極め、名声も全て受け取った。まよなか食堂の物語はここに完結"
+: "やり込み中: 名声ショップ全段・全料理ピカピカ・実績コンプリート";
+  $("metaLine").textContent="通算階位: "+metaTitle(S)+"（のれん分け"+S.prestigeCount+"回・通算売上"+fmt(S.lifetimeAll)+"）"+" ランク倍率×"+(1+0.05*r.idx).toFixed(2);
+  $("capLine").textContent = nUpIdx>=0 ? "次のこだわり: 『"+UPS[nUpIdx].name+"』 "+fmt(UPS[nUpIdx].cost)+(S.money>=UPS[nUpIdx].cost ? " ― 買える！" : "（あと約"+fmtSec(Math.max(1,Math.round(minsTo(UPS[nUpIdx].cost)*60)))+" ／ あと約"+Math.max(0,Math.ceil((UPS[nUpIdx].cost-S.money)/Math.max(1,serveValue(S))))+"タップ）")
+    : "こだわり強化は全て導入済み";
+  const runIdx=r.idx;
   if(runIdx!==S.lastRunIdx || !shopInit){
     const firstRender=!shopInit;
     S.lastRunIdx=runIdx; shopInit=true;
@@ -1032,7 +1115,7 @@ function render(){
   if(r.next){
     $("nextShopBox").style.display="flex";
     $("nextShopImg").src=SHOP_IMGS[runIdx+1];
-    $("nextShopText").textContent="次の姿 ― ランク「"+r.next.name+"」で店の様子が変わり、出せる料理も増える";
+    $("nextShopText").textContent="次の姿 ― こだわりをあと "+(2-(upsOwnedCount(S)%2))+" 個入れるとランク「"+r.next.name+"」に上がり、店の様子が変わる";
   } else {
     $("nextShopBox").style.display="none";
   }
@@ -1045,7 +1128,7 @@ function render(){
   GENS.forEach((g,i)=>{
     const row=gensEl.children[i];
     const owned=S.gens[i];
-    row.querySelector(".own").textContent="所持 "+owned;
+    row.querySelector(".own").textContent="所持 "+owned+" / "+capN(S)+(owned>=capN(S)?"（満席）":"");
     const nextMile=MILES.find(m=>owned<m);
     const mileText = owned===0 ? "" :
       (nextMile ? " ／ 節目まであと"+(nextMile-owned)+"個（達成で収入×"+(Math.round(mileMult(nextMile)/mileMult(owned)*100)/100)+"）" : " ／ 節目は全て達成（収入"+mileMult(owned)+"倍）");
@@ -1060,8 +1143,9 @@ function render(){
     const qty=purchaseQty(i);
     const c = (qty<1 && buyMode==="mile") ? genCost(i,owned,want,S) : genCost(i,owned,Math.max(qty,1),S);
     b.textContent = qty<1 ? (fmt(c)+(buyMode==="mile" ? "（×"+want+"）" : "")) : (fmt(c)+"（×"+qty+(qty<want ? "/"+want : "")+"）");
-    b.disabled = qty<1;
-  });
+     b.disabled = qty<1 || owned>=capN(S);
+ if(owned>=capN(S) &&!S.capAnnounced){ S.capAnnounced=true; log("🪑 店が狭くて、これ以上置けない（満席）。暖簾分けすれば、こだわりに見合った広い店で始められる");}
+});
   UPS.forEach((u,i)=>{
     const row=upsRowEls[i];
     const b=row.querySelector(".buy");
@@ -1097,17 +1181,26 @@ function render(){
     return '<span class="'+(done?"done":"")+'">'+(done?"✔ ":"… ")+a.label+"</span>";
   }).join("<br>");
   const nowMs=Date.now();
+  secRegen(S);
   const b10=$("btnSec10"), b30=$("btnOoiri");
-  if(perSec(S)<=0){ b10.textContent="⏱ 10秒分（自動収入が始まると使える）"; b10.disabled=true; }
-  else if(nowMs<(S.cd10At||0)){ b10.textContent="⏱ 10秒分（あと"+Math.ceil((S.cd10At-nowMs)/1000)+"秒）"; b10.disabled=true; }
-  else { b10.textContent="⏱ 10秒分 = "+fmt(perSec(S)*10); b10.disabled=false; }
-  if(!act2Unlocked(S)){ b30.textContent="🎉 大入り 30秒分（名声10で解放・現在 "+(S.fameTotal||0)+"/10）"; b30.disabled=true; }
+  const stkDots=(b,mx)=>{ let d=""; for(let i=0;i<mx;i++) d+= (i<b.n?"●":"○"); return d; };
+  const s10=S.sec10||{n:0,t:0}, s30=S.sec30||{n:0,t:0};
+  const sec10Val=(S.ups&&S.ups[9])?20:10;
+  if(perSec(S)<=0){ b10.textContent="⏱ おすすめ（自動収入が始まると使える）"; b10.disabled=true; }
+  else { b10.textContent="⏱ おすすめ "+sec10Val+"秒分 = "+fmt(perSec(S)*sec10Val)+" "+stkDots(s10, secStockMax(S,10))+(s10.n<=0&&s10.t? "（次まで あと"+Math.max(1,Math.ceil((s10.t-nowMs)/1000))+"秒）":""); b10.disabled=s10.n<=0; }
+  if(!act2Unlocked(S)){ b30.textContent="🎉 大入り 30秒分（こだわり『常連カード発行』で解放）"; b30.disabled=true; }
   else if(perSec(S)<=0){ b30.textContent="🎉 大入り 30秒分（自動収入が始まると使える）"; b30.disabled=true; }
-  else if(nowMs<(S.cd30At||0)){ b30.textContent="🎉 大入り（あと"+Math.ceil((S.cd30At-nowMs)/1000)+"秒）"; b30.disabled=true; }
-  else { b30.textContent="🎉 大入り 30秒分 = "+fmt(perSec(S)*30); b30.disabled=false; }
+  else { b30.textContent="🎉 大入り 30秒分 = "+fmt(perSec(S)*30)+" "+stkDots(s30, secStockMax(S,30))+(s30.n<=0&&s30.t? "（次まで あと"+Math.max(1,Math.ceil((s30.t-nowMs)/1000))+"秒）":""); b30.disabled=s30.n<=0; }
   $("mOrders").textContent = "🍽 注文" + (act2Unlocked(S) ? " "+ordersDoneCount(S)+"/20" : " 🔒");
+  $("mRegs").textContent = "📖 常連と実績" + ((S.seenStories||[]).length > (S.storyAck||0) ? " ●" : "");
   const g=prestigeGain(S);
-  $("prestigeInfo").innerHTML = "現在の店舗累計: <b>"+fmt(S.lifetimeRun)+"</b> ／ いまのれん分けすると名声 <b>"+g+"</b> が手に入る"+(g>0?"":"（店舗累計"+fmt(prestigeBase(S))+"から可能）")+"<br>使える名声: <b>"+S.prestigePoints+"</b>";
+  $("kiwameSec").style.display = S.finaleDone? "": "none";
+UPS.forEach((u,i)=>{
+const row=kiwameRowEls[i]; const b=row.querySelector(".buy");
+if(S.kiwame&&S.kiwame[i]){ b.textContent="極め済み"; b.disabled=true; row.style.opacity=".55";}
+else { b.textContent=fmt(KIWAME_COSTS[i]); b.disabled = S.money < KIWAME_COSTS[i]; row.style.opacity="1";}
+});
+$("prestigeInfo").innerHTML = "次の店: 設備は1種 <b>"+(25+12*(upsOwnedCount(S)+kiwameOwnedCount(S)))+"</b> 台まで ／ この周回の実績: こだわり <b>"+(S.runUps||0)+"</b> 個 ／ 注文 <b>"+(S.runOrders||0)+"</b> 件（今期売上 "+fmt(S.lifetimeRun)+")<br>いまのれん分けすると名声 <b>"+g+"</b> が手に入る"+(g>0?"":"（こだわりか極めを買うと、のれん分けできる）")+"<br>使える名声: <b>"+S.prestigePoints+"</b> ／ 名声ランク: <b>"+(S.fameTotal||0)+"</b>（全収入 ×"+Math.pow(1.2,(S.fameTotal||0)).toFixed(2)+"）";
   $("btnPrestige").disabled = g<=0 || !!S.ascending;
   const mp=$("mPrestige");
   mp.textContent="🎉 のれん分け"+(g>0 ? " +"+g : "");
@@ -1136,7 +1229,7 @@ function renderOrders(){
   }
   dg.innerHTML=dgHtml;
   if(!act2Unlocked(S)){
-    panel.innerHTML='<span style="color:#8a7454;font-size:12.5px;">🔒 まだ開いていない。のれん分けで名声を累計 <b>10</b> 集めると、常連さんからの注文が始まる（現在 '+(S.fameTotal||0)+' / 10）。注文は売上（¥）ではなく、出した皿の数で進む仕組み。</span>';
+    panel.innerHTML='<span style="color:#8a7454;font-size:12.5px;">🔒 まだ開いていない。こだわり強化『常連カード発行』を買うと、常連さんからの注文が始まる。注文は売上（¥）ではなく、出した皿の数で進む仕組み。</span>';
     return;
   }
   let html='<div style="margin-bottom:6px;">絆: <b style="color:#ffd479;">'+(S.bond||0)+'</b> 点（注文完了でもらえる）／ 完走した注文: <b>'+ordersDoneCount(S)+' / 20</b></div>';
@@ -1152,8 +1245,8 @@ function renderOrders(){
       +'「'+DISHES[di].name+'」を '+GRADE_NAMES[o.gradeReq-1]+'以上の腕で出す ― '+prog
       +'<br><button data-focus="'+ri+'" style="font:inherit;font-size:12px;margin-top:4px;background:'+(foc?"#8a6a34":"#4a3319")+';color:#ffe1a8;border:1px solid #8a6a34;border-radius:7px;padding:5px 10px;cursor:pointer;">'+(foc?"🎯 注目中（この料理を優先して出す）":"この注文に注目する")+'</button></div>';
   });
-  if(ordersDoneCount(S)>=20 && !S.finaleDone){
-    html+='<div class="reg" style="border-color:#ffd479;">🎆 <b>最終イベント</b>: 常連全員に特別メニューを出す<br>費用: 所持金 ¥200,000,000 ＋ 絆 15（現在 絆 '+(S.bond||0)+')<br><button id="btnFinale" style="font:inherit;font-size:13px;font-weight:700;margin-top:6px;background:#8a6a34;color:#fff;border:1px solid #ffd479;border-radius:8px;padding:8px 14px;cursor:pointer;">特別メニューを出す（クリア）</button></div>';
+  if(ordersDoneCount(S)>=20 && (S.ups&&S.ups[14]) && !S.finaleDone){
+    html+='<div class="reg" style="border-color:#ffd479;">🎆 <b>最終イベント</b>: 常連全員に特別メニューを出す<br>費用: 所持金 '+fmt(finaleCost(S))+' ＋ 絆 15（現在 絆 '+(S.bond||0)+')<br><button id="btnFinale" style="font:inherit;font-size:13px;font-weight:700;margin-top:6px;background:#8a6a34;color:#fff;border:1px solid #ffd479;border-radius:8px;padding:8px 14px;cursor:pointer;">特別メニューを出す（クリア）</button></div>';
   }
   if(S.finaleDone) html+='<div class="reg">🏆 最終イベントは達成済み。語り継がれる店の営業は続く。</div>';
   panel.innerHTML=html;
@@ -1161,14 +1254,18 @@ function renderOrders(){
     btn.addEventListener("click", ()=>{ const ri=+btn.getAttribute("data-focus"); S.focusReg = (S.focusReg===ri ? -1 : ri); render(); save(); });
   });
   const bf=$("btnFinale");
-  if(bf) bf.addEventListener("click", ()=>{ if(doFinale(S)){ render(); save(); } else { log("最終イベントの費用が足りない（所持金¥200,000,000と絆15が必要）"); } });
+  if(bf) bf.addEventListener("click", ()=>{ if(doFinale(S)){ render(); save(); } else { log("最終イベントの費用が足りない（所持金"+fmt(finaleCost(S))+"と絆15が必要）"); } });
 }
 // ===== 操作 =====
-$("btnServe").addEventListener("click", ()=>{
+const tapTimes=[];
+function serveTap(factor){
+  const nowT=Date.now();
+  while(tapTimes.length && nowT-tapTimes[0]>1000) tapTimes.shift();
+  if(factor>=1){ if(tapTimes.length>=6) return; tapTimes.push(nowT); }
   let dishIdx;
   const fo = (typeof S.focusReg==="number" && S.focusReg>=0) ? activeOrder(S, S.focusReg) : null;
-  if(fo) dishIdx=fo.dish; else dishIdx=Math.floor(Math.random()*servableDishCount(S));
-  doServe(S, dishIdx);
+  if(fo && fo.dish<servableDishCount(S)) dishIdx=fo.dish; else dishIdx=Math.floor(Math.random()*servableDishCount(S));
+  doServe(S, dishIdx, factor);
   const dish=DISHES[dishIdx];
   $("dish").textContent = dish.name;
   const regComments=unlockedRegs(S).flatMap(r=>r.comments);
@@ -1179,8 +1276,12 @@ $("btnServe").addEventListener("click", ()=>{
   else c=GENERIC_COMMENTS[Math.floor(Math.random()*GENERIC_COMMENTS.length)];
   $("comment").textContent = c;
   render();
-});
-$("btnSec10").addEventListener("click", ()=>{ if(useSec10(S)){ log("⏱ 10秒分のもてなし！ +"+fmt(perSec(S)*10)); render(); save(); } });
+}
+$("btnServe").addEventListener("click", ()=>serveTap(1));
+let holdTimer=null;
+$("btnServe").addEventListener("pointerdown", ()=>{ if(holdTimer) clearInterval(holdTimer); holdTimer=setInterval(()=>serveTap(0.5), 250); });
+["pointerup","pointerleave","pointercancel"].forEach(ev=>$("btnServe").addEventListener(ev, ()=>{ if(holdTimer){ clearInterval(holdTimer); holdTimer=null; } }));
+$("btnSec10").addEventListener("click", ()=>{ if(useSec10(S)){ log("⏱ おすすめのもてなし！ +"+fmt(perSec(S)*((S.ups&&S.ups[9])?20:10))); render(); save(); } });
 $("btnOoiri").addEventListener("click", ()=>{ if(useOoiri(S)){ log("🎉 大入り！ 30秒分 +"+fmt(perSec(S)*30)); render(); save(); } });
 function setBuyMode(m){
   buyMode=m;
@@ -1193,17 +1294,17 @@ $("mode1").addEventListener("click", ()=>setBuyMode("1"));
 $("mode5").addEventListener("click", ()=>setBuyMode("5"));
 $("modeMile").addEventListener("click", ()=>setBuyMode("mile"));
 const VIEWS=[["mBuy","viewBuy"],["mUps","viewUps"],["mOrders","viewOrders"],["mRegs","viewRegs"],["mPrestige","viewPrestige"]];
-VIEWS.forEach(([b,v])=>{ $(b).addEventListener("click", ()=>{ if(b==="mUps") $("mUps").classList.remove("hot"); if(b==="mOrders") $("mOrders").classList.remove("hot"); VIEWS.forEach(([b2,v2])=>{ $(b2).classList.toggle("on", b2===b); $(v2).classList.toggle("on", v2===v); }); }); });
+VIEWS.forEach(([b,v])=>{ $(b).addEventListener("click", ()=>{ if(b==="mUps") $("mUps").classList.remove("hot"); if(b==="mOrders") $("mOrders").classList.remove("hot"); if(b==="mRegs") S.storyAck=(S.seenStories||[]).length; VIEWS.forEach(([b2,v2])=>{ $(b2).classList.toggle("on", b2===b); $(v2).classList.toggle("on", v2===v); }); }); });
 $("btnPrestige").addEventListener("click", ()=>{
   const g=beginPrestige(S);
   if(g>0){ log("🎉 のれん分け！ 名声+"+g+"。名声ショップで買い物をして、新しい店を始めよう"); render(); save(); }
 });
 $("btnStartRun").addEventListener("click", ()=>{
-  if(startNewRun(S)){ shopInit=false; upsUnlockedSeen.clear(); log("🏠 新しい店が始まった（名声と常連さんの名簿・物語・実績は引き継がれる）"); render(); save(); }
+  if(startNewRun(S)){ shopInit=false; upsUnlockedSeen.clear(); log("🏠 新しい店が始まった（こだわり強化・名声・常連さんの名簿と物語・料理の腕前・実績は引き継がれる）"); render(); save(); }
 });
 $("btnReset").addEventListener("click", ()=>{
   if(confirm("本当にデータを消して最初からにしますか？")){
-    S=newState(); shopInit=false; upsUnlockedSeen.clear(); upsInit=false; localStorage.removeItem("midnightDinerSaveV1");
+    S=newState(); shopInit=false; upsUnlockedSeen.clear(); upsInit=false; localStorage.removeItem("midnightDinerSaveV9");
     logLines.length=0; $("tickerHistory").innerHTML=""; log("心機一転、屋台から再スタート"); render();
   }
 });
@@ -1214,12 +1315,12 @@ function fireEvent(){
     const big = Math.random()<0.12;
     const pool = unlockedRegs(S).length>0 ? EVENTS_EARLY.concat(EVENTS_REG) : EVENTS_EARLY;
     const ev = big ? BIG_EVENT : pool[Math.floor(Math.random()*pool.length)];
-    const bonus = capGain(S, Math.max(500, perSec(S)*ev.mult));
+    const bonus = eventCapGain(S, Math.max(500, perSec(S)*ev.mult));
     earn(S, bonus);
     log(ev.text+"（+"+fmt(bonus)+"）");
     afterEarn(); render();
   }
-  setTimeout(fireEvent, 55000 + Math.random()*40000);
+  setTimeout(fireEvent, 60000 + Math.random()*30000);
 }
 let choiceOpen=false;
 function fireChoice(){
@@ -1255,7 +1356,7 @@ function fireChoice(){
         const key=res.story+"-"+bi;
         if(!advanced && !S.seenStories.includes(key)){ S.seenStories.push(key); log("📖 常連さん ― "+b.text); advanced=true; }
       });
-      if(!advanced) gain += choiceGain(S, perSec(S)*160);
+      if(!advanced) gain += choiceGain(S, perSec(S)*30);
     }
     if(gain>0) earn(S, gain);
     log(c.title+" ― "+res.msg);
@@ -1274,7 +1375,7 @@ function fireChoice(){
 // ===== 特別なお客さん（反応型イベント） =====
 let guestActive=false, guestTimer=null;
 let clearShown=false;
-function guestGain(){ return Math.max(500, perSec(S)*60 + serveValue(S)*15); }
+function guestGain(){ return Math.max(500, perSec(S)*20 + serveValue(S)*8); }
 function scheduleGuest(delay){ setTimeout(spawnGuest, delay!=null ? delay : (240+Math.random()*120)*1000); }
 function spawnGuest(){
   if(S.ascending || guestActive || document.hidden || clearShown){ scheduleGuest(60000); return; }
@@ -1309,7 +1410,7 @@ try{ localStorage.setItem("__md_test","1"); localStorage.removeItem("__md_test")
 function save(){
   S.lastSeen=Date.now();
   if(!storageOK) return;
-  try{ localStorage.setItem("midnightDinerSaveV1", JSON.stringify(S)); }catch(e){ storageOK=false; }
+  try{ localStorage.setItem("midnightDinerSaveV9", JSON.stringify(S)); }catch(e){ storageOK=false; }
 }
 function exportCode(){
   S.lastSeen=Date.now();
@@ -1343,17 +1444,26 @@ function importCode(code){
     ns.orderProg = REGULARS.map((_,i)=> (Array.isArray(data.orderProg) && data.orderProg[i]) || 0);
     if(typeof ns.bond!=="number") ns.bond=0;
     if(typeof ns.focusReg!=="number") ns.focusReg=-1;
-    if(typeof ns.cd10At!=="number") ns.cd10At=0;
-    if(typeof ns.cd30At!=="number") ns.cd30At=0;
+    if(!ns.sec10) ns.sec10={n:3,t:0};
+    if(!ns.sec30) ns.sec30={n:3,t:0};
+    if(typeof ns.runUps!=="number") ns.runUps=0;
+    if(typeof ns.runOrders!=="number") ns.runOrders=0;
+    if(typeof ns.heatUntil!=="number") ns.heatUntil=0;
+    if(typeof ns.storyAck!=="number") ns.storyAck=0;
     if(typeof ns.serveFrac!=="number") ns.serveFrac=0;
     if(typeof ns.goalReached!=="boolean") ns.goalReached = ns.lifetimeAll>=GOAL;
     if(typeof ns.finaleDone!=="boolean") ns.finaleDone=false;
+ if(!Array.isArray(ns.kiwame)) ns.kiwame=UPS.map(()=>false);
+ if(typeof ns.pendingUnits!=="number") ns.pendingUnits=0;
+ if(typeof ns.runCapK!=="number") ns.runCapK=0;
+ if(typeof ns.capAnnounced!=="boolean") ns.capAnnounced=false;
+ if(typeof ns.nextStartMoney!=="number") ns.nextStartMoney=0;
     S=ns; shopInit=false; return true;
   }catch(e){ return false; }
 }
 function load(){
   try{
-    const raw=localStorage.getItem("midnightDinerSaveV1");
+    const raw=localStorage.getItem("midnightDinerSaveV9");
     if(!raw) return;
     const data=JSON.parse(raw);
     const ns=newState(); Object.assign(ns, data);
@@ -1379,13 +1489,22 @@ function load(){
     ns.orderProg = REGULARS.map((_,i)=> (Array.isArray(data.orderProg) && data.orderProg[i]) || 0);
     if(typeof ns.bond!=="number") ns.bond=0;
     if(typeof ns.focusReg!=="number") ns.focusReg=-1;
-    if(typeof ns.cd10At!=="number") ns.cd10At=0;
-    if(typeof ns.cd30At!=="number") ns.cd30At=0;
+    if(!ns.sec10) ns.sec10={n:3,t:0};
+    if(!ns.sec30) ns.sec30={n:3,t:0};
+    if(typeof ns.runUps!=="number") ns.runUps=0;
+    if(typeof ns.runOrders!=="number") ns.runOrders=0;
+    if(typeof ns.heatUntil!=="number") ns.heatUntil=0;
+    if(typeof ns.storyAck!=="number") ns.storyAck=0;
     if(typeof ns.serveFrac!=="number") ns.serveFrac=0;
     if(typeof ns.goalReached!=="boolean") ns.goalReached = ns.lifetimeAll>=GOAL;
     if(typeof ns.finaleDone!=="boolean") ns.finaleDone=false;
+ if(!Array.isArray(ns.kiwame)) ns.kiwame=UPS.map(()=>false);
+ if(typeof ns.pendingUnits!=="number") ns.pendingUnits=0;
+ if(typeof ns.runCapK!=="number") ns.runCapK=0;
+ if(typeof ns.capAnnounced!=="boolean") ns.capAnnounced=false;
+ if(typeof ns.nextStartMoney!=="number") ns.nextStartMoney=0;
     S=ns;
-    const awaySec=Math.min(8*3600, Math.max(0, (Date.now()-(data.lastSeen||Date.now()))/1000));
+    const awaySec=Math.min((8+2*((S.fameShop&&S.fameShop[1])||0))*3600, Math.max(0, (Date.now()-(data.lastSeen||Date.now()))/1000));
     const off=S.ascending ? 0 : perSec(S)*awaySec*offlineRate(S);
     if(off>=100){ earn(S, off); setTimeout(()=>log("閉店中もお店が稼いでくれた（+"+fmt(off)+"）"), 600); }
   }catch(e){}
@@ -1397,7 +1516,7 @@ log("まよなか食堂、開店。今夜も頑張ろう");
 setTimeout(fireEvent, 45000);
 scheduleGuest(150000);
 setTimeout(fireChoice, 120000);
-setInterval(()=>{ S.playSec+=1; if(!S.ascending){ earn(S, perSec(S)); serveTick(S, 1); afterEarn(); } render(); }, 1000);
+setInterval(()=>{ S.playSec+=1; secRegen(S); if(!S.ascending){ earn(S, perSec(S)); serveTick(S, 1); afterEarn(); } render(); }, 1000);
 setInterval(save, 5000);
 document.addEventListener("visibilitychange", ()=>{ if(document.hidden) save(); });
 </script>

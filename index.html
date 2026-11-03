@@ -238,6 +238,8 @@
             </div>
         </div>
         <div class="buyScroll">
+          <h2 style="margin-top:0;">仕込み（この店の間だけ効く積み重ね）</h2>
+          <div id="shikomi"></div>
           <div id="gens"></div>
         </div>
       </div>
@@ -285,7 +287,7 @@
     壁にぶつかって伸びが止まったら、のれん分けの時。こだわり強化（クリア後は『極め』）を買っているとできる。<br>
     手に入る <b>名声</b> は、こだわり強化や『極め』を買うたびに <b>3</b> ずつ貯まる。のれん分けで受け取れるのは1回に <b>6</b> までで、余りは次回に繰り越される。売上を伸ばすだけでは増えない。<br>
     名声には2つの顔がある: ①<b>名声ランク</b>（通算の獲得数）1つにつき全収入が永久に <b>×1.2</b>（掛け算で効く）。②<b>使える名声</b> は、のれん分けの時に開く名声ショップで恒常強化に交換できる。<br>
-    <span style="color:#8a7454;font-size:12.5px;">消えるもの: お金・設備・今期の売上／残るもの: こだわり強化と『極め』・店のランク・名声と名声ショップの強化・常連さんの名簿と物語・料理の腕前・実績・クリア記録</span>
+    <span style="color:#8a7454;font-size:12.5px;">消えるもの: お金・設備・仕込み・今期の売上／残るもの: こだわり強化と『極め』・店のランク・名声と名声ショップの強化・常連さんの名簿と物語・料理の腕前・実績・クリア記録</span>
     <div id="prestigeInfo" style="margin-top:6px;"></div>
     <div id="ownedList" style="margin-top:8px;font-size:12px;color:#b39d7d;line-height:1.7;"></div>
     <button id="btnPrestige">のれん分けする</button>
@@ -304,6 +306,7 @@
   </div>
     <p class="small">
     セーブは自動（このブラウザに保存）。閉じている間も、お店が少し稼いでくれます（自動収入の10%、名声ショップで最大50%・最大16時間分）。<br>
+    「仕込み」は買い物タブにある、今の店の間だけ効く積み重ね強化。重ねるたび全収入×1.25（最大5段・価格は今の収入ペースに連動）で、のれん分けするとリセットされる。<br>
     目標: こだわり強化を集めて第2幕（常連の注文）を開き、注文20件を完走して、最後に常連全員へ特別メニューを出すとクリア。その後は『極め』と名声ショップの全段そろえがやり込みです。
   </p>
   <div style="text-align:center;"><button id="btnReset">データを消して最初から</button></div>
@@ -314,7 +317,7 @@
     <h3>🎉 のれん分け</h3>
     <p id="ascGain" style="text-align:center;font-size:14.5px;line-height:1.8;"></p>
     <p style="font-size:12.5px;color:#cbb58f;line-height:1.8;margin-top:8px;">
-      <b style="color:#ffd479;">消えるもの:</b> お金・設備・こだわり強化・今期の売上とランク<br>
+      <b style="color:#ffd479;">消えるもの:</b> お金・設備・仕込み・こだわり強化・今期の売上とランク<br>
       <b style="color:#ffd479;">残るもの:</b> 名声・名声ショップの強化・常連さんの名簿と物語・実績・クリア記録
     </p>
     <h2 style="color:#ffd98a;">名声ショップ（ここで買い物できます）</h2>
@@ -358,11 +361,11 @@ const UPS = [
   { name:"老舗の秘伝ダレ",   desc:"全収入が5倍", cost:32453612206170, cond:s=>s.lifetimeAll>=100000000, condText:"通算売上¥100,000,000", kind:"global", mult:5 },
   { name:"行列のさばき方",   desc:"おすすめ（10秒分）と大入り（30秒分）の回復が半分になる", cost:134189816784014, cond:s=>s.gens[4]>=8, condText:"カウンター増設を8つ買う", kind:"seccd" },
   { name:"三連寸胴と大竈",   desc:"大きな寸胴鍋・業務用コンロ・2店舗目の厨房の収入が8倍", cost:1598915996687525, cond:s=>s.gens[1]>=10, condText:"大きな寸胴鍋を10つ買う", kind:"gen", idxs:[1,2,6], mult:8 },
-  { name:"吟味した食材",     desc:"料理の腕前の上限が「つやつや」まで上がる", cost:2185106412694446, cond:s=>s.totalServes>=8000, condText:"通算で8,000皿出す", kind:"gradecap" },
+  { name:"吟味した食材",     desc:"料理の腕前の上限が「つやつや」まで上がる", cost:2185106412694446, cond:s=>s.totalServes>=6000, condText:"通算で6,000皿出す", kind:"gradecap" },
   { name:"暖簾の力",         desc:"全収入が6倍", cost:13636567101548836, cond:s=>s.prestigeCount>=2, condText:"のれん分け2回", kind:"global", mult:6 },
-  { name:"名物メニューの完成", desc:"おすすめが20秒分になる", cost:17635847885700522, cond:s=>s.totalServes>=15000, condText:"通算で15,000皿出す", kind:"osusume" },
+  { name:"名物メニューの完成", desc:"おすすめが20秒分になる", cost:17635847885700522, cond:s=>s.totalServes>=11250, condText:"通算で11,250皿出す", kind:"osusume" },
   { name:"行列の店構え",     desc:"カウンター増設・看板と赤提灯・常連のフードライター・深夜の行列の収入が8倍", cost:578177158113542784, cond:s=>s.gens[4]>=12, condText:"カウンター増設を12つ買う", kind:"gen", idxs:[4,5,7,8], mult:8 },
-  { name:"極上の素材",       desc:"料理の腕前の上限が「ピカピカ」まで上がる", cost:797653234434962304, cond:s=>s.totalServes>=25000, condText:"通算で25,000皿出す", kind:"gradecap" },
+  { name:"極上の素材",       desc:"料理の腕前の上限が「ピカピカ」まで上がる", cost:797653234434962304, cond:s=>s.totalServes>=18750, condText:"通算で18,750皿出す", kind:"gradecap" },
   { name:"老舗の店構え",     desc:"全収入が8倍", cost:9470136219605112832, cond:s=>s.lifetimeAll>=1000000000000000, condText:"通算売上¥1000兆", kind:"global", mult:8 },
   { name:"大入りの熱気",     desc:"大入りを使うと10秒間、「料理を出す」の売上が2倍になる", cost:13669951955794485248, cond:s=>ordersDoneCount(s)>=10, condText:"常連の注文を10件満たす", kind:"heat" },
   { name:"伝説の包丁さばき", desc:"全収入が10倍 ― 最終イベントへの扉", cost:61514783801075183616, cond:s=>ordersDoneCount(s)>=15, condText:"常連の注文を15件満たす", kind:"global", mult:10 }
@@ -374,11 +377,11 @@ UPS[3].prog=s=>"（現在 "+s.totalServes+" / 1,500皿）";
 UPS[4].prog=s=>"（現在 通算売上 "+fmt(s.lifetimeAll)+" / ¥100,000,000）";
 UPS[5].prog=s=>"（現在 "+s.gens[4]+" / 8つ）";
 UPS[6].prog=s=>"（現在 "+s.gens[1]+" / 10つ）";
-UPS[7].prog=s=>"（現在 "+s.totalServes+" / 8,000皿）";
+UPS[7].prog=s=>"（現在 "+s.totalServes+" / 6,000皿）";
 UPS[8].prog=s=>"（現在 のれん分け "+s.prestigeCount+" / 2回）";
-UPS[9].prog=s=>"（現在 "+s.totalServes+" / 15,000皿）";
+UPS[9].prog=s=>"（現在 "+s.totalServes+" / 11,250皿）";
 UPS[10].prog=s=>"（現在 "+s.gens[4]+" / 12つ）";
-UPS[11].prog=s=>"（現在 "+s.totalServes+" / 25,000皿）";
+UPS[11].prog=s=>"（現在 "+s.totalServes+" / 18,750皿）";
 UPS[12].prog=s=>"（現在 通算売上 "+fmt(s.lifetimeAll)+" / ¥1000兆）";
 UPS[13].prog=s=>"（現在 注文 "+ordersDoneCount(s)+" / 10件）";
 UPS[14].prog=s=>"（現在 注文 "+ordersDoneCount(s)+" / 15件）";
@@ -632,7 +635,7 @@ function newState(){
     dishServes:DISHES.map(()=>0), serveFrac:0, bond:0, bondShop:BSHOP.map(()=>0),
     orderStage:REGULARS.map(()=>0), orderProg:REGULARS.map(()=>0), focusReg:-1,
     sec10:{n:3,t:0}, sec30:{n:3,t:0}, runUps:0, runOrders:0, heatUntil:0, storyAck:0, goalReached:false, finaleDone:false,
- pendingUnits:0, kiwame:UPS.map(()=>false), runCapK:0, capAnnounced:false, nextStartMoney:0};
+ pendingUnits:0, kiwame:UPS.map(()=>false), runCapK:0, capAnnounced:false, nextStartMoney:0, shikomiLvl:0};
 }
 let S = newState();
 let buyMode = "1";
@@ -689,6 +692,7 @@ function globalMult(s){
   m *= 1 + 0.05*rankIdxOf(s);
   if(s.fameShop) m *= 1 + 0.05*(s.fameShop[4]||0);
   m *= Math.pow(1.2, s.fameTotal||0);
+  if(s.shikomiLvl) m *= Math.pow(1.25, s.shikomiLvl);
  const kw=(s.kiwame||[]).filter(x=>x).length; if(kw) m *= Math.pow(4, kw);
   if(s.orderStage) m *= 1 + 0.05*s.orderStage.filter(x=>x>=4).length;
   for(let i=0;i< UPS.length;i++) if(s.ups[i] && UPS[i].kind==="global") m*=UPS[i].mult;
@@ -743,6 +747,22 @@ function buyUp(s,i){
 if(s.ups[i] || s.money < UPS[i].cost ||!UPS[i].cond(s)) return false;
 s.money-=UPS[i].cost; s.ups[i]=true; s.runUps=(s.runUps||0)+1; s.pendingUnits=(s.pendingUnits||0)+1;
   if(s.ups.every(x=>x)){ s.flags=s.flags||{gensAll:false,upsAll:false}; s.flags.upsAll=true; }
+  return true;
+}
+const SHIKOMI_MAX = 5;
+const SHIKOMI_MULT = 1.25;
+const SHIKOMI_SEC = 120;
+function shikomiPrice(s){
+  if((s.shikomiLvl||0) >= SHIKOMI_MAX) return Infinity;
+  const e = activeIncome(s);
+  return e > 0 ? Math.ceil(e * SHIKOMI_SEC) : Infinity;
+}
+function buyShikomi(s){
+  const lvl = s.shikomiLvl||0;
+  if(lvl >= SHIKOMI_MAX) return false;
+  const c = shikomiPrice(s);
+  if(!(s.money >= c)) return false;
+  s.money -= c; s.shikomiLvl = lvl + 1;
   return true;
 }
 function beginPrestige(s){
@@ -960,6 +980,14 @@ GENS.forEach((g,i)=>{
   });
   gensEl.appendChild(row);
 });
+const shikomiEl=$("shikomi");
+const shikomiRow=document.createElement("div"); shikomiRow.className="row";
+shikomiRow.innerHTML='<div class="info"><div class="name"></div><div class="desc"></div></div><div class="own"></div><button class="buy"></button>';
+shikomiRow.querySelector(".name").textContent="仕込みを重ねる";
+shikomiRow.querySelector(".buy").addEventListener("click", ()=>{
+  if(buyShikomi(S)){ log("🍲 仕込みを重ねた（"+(S.shikomiLvl||0)+"段目） ― 全収入が×1.25された"); render(); save(); }
+});
+shikomiEl.appendChild(shikomiRow);
 const kiwameEl=$("kiwame");
 const kiwameRowEls=[];
 UPS.forEach((u,i)=>{
@@ -1146,6 +1174,16 @@ function render(){
      b.disabled = qty<1 || owned>=capN(S);
  if(owned>=capN(S) &&!S.capAnnounced){ S.capAnnounced=true; log("🪑 店が狭くて、これ以上置けない（満席）。暖簾分けすれば、こだわりに見合った広い店で始められる");}
 });
+  { const shkLvl=S.shikomiLvl||0;
+    shikomiRow.querySelector(".own").textContent=shkLvl+" / "+SHIKOMI_MAX+"段";
+    const shkB=shikomiRow.querySelector(".buy");
+    const shkD=shikomiRow.querySelector(".desc");
+    const shkMult=Math.pow(SHIKOMI_MULT, shkLvl);
+    if(shkLvl>=SHIKOMI_MAX){ shkB.textContent="上限"; shkB.disabled=true; shikomiRow.style.opacity=".55";
+      shkD.textContent="今の店の仕込みは上限まで重ねた（全収入 ×"+shkMult.toFixed(2)+"）。のれん分けすると仕込みは消え、新しい店でまた重ね直せる"; }
+    else { const shkC=shikomiPrice(S); shkB.textContent=fmt(shkC); shkB.disabled = !(S.money>=shkC); shikomiRow.style.opacity="1";
+      shkD.textContent="出す料理の下ごしらえを重ねて、今の店の全収入が1回ごとに×1.25（現在 ×"+shkMult.toFixed(2)+"）。価格は今の収入ペース（約120秒分）に連動する。のれん分けでリセットされる"; }
+  }
   UPS.forEach((u,i)=>{
     const row=upsRowEls[i];
     const b=row.querySelector(".buy");
@@ -1304,7 +1342,7 @@ $("btnStartRun").addEventListener("click", ()=>{
 });
 $("btnReset").addEventListener("click", ()=>{
   if(confirm("本当にデータを消して最初からにしますか？")){
-    S=newState(); shopInit=false; upsUnlockedSeen.clear(); upsInit=false; localStorage.removeItem("midnightDinerSaveV9");
+    S=newState(); shopInit=false; upsUnlockedSeen.clear(); upsInit=false; localStorage.removeItem("midnightDinerSaveV10");
     logLines.length=0; $("tickerHistory").innerHTML=""; log("心機一転、屋台から再スタート"); render();
   }
 });
@@ -1410,7 +1448,7 @@ try{ localStorage.setItem("__md_test","1"); localStorage.removeItem("__md_test")
 function save(){
   S.lastSeen=Date.now();
   if(!storageOK) return;
-  try{ localStorage.setItem("midnightDinerSaveV9", JSON.stringify(S)); }catch(e){ storageOK=false; }
+  try{ localStorage.setItem("midnightDinerSaveV10", JSON.stringify(S)); }catch(e){ storageOK=false; }
 }
 function exportCode(){
   S.lastSeen=Date.now();
@@ -1458,12 +1496,13 @@ function importCode(code){
  if(typeof ns.runCapK!=="number") ns.runCapK=0;
  if(typeof ns.capAnnounced!=="boolean") ns.capAnnounced=false;
  if(typeof ns.nextStartMoney!=="number") ns.nextStartMoney=0;
+ if(typeof ns.shikomiLvl!=="number") ns.shikomiLvl=0;
     S=ns; shopInit=false; return true;
   }catch(e){ return false; }
 }
 function load(){
   try{
-    const raw=localStorage.getItem("midnightDinerSaveV9");
+    const raw=localStorage.getItem("midnightDinerSaveV10");
     if(!raw) return;
     const data=JSON.parse(raw);
     const ns=newState(); Object.assign(ns, data);
@@ -1503,6 +1542,7 @@ function load(){
  if(typeof ns.runCapK!=="number") ns.runCapK=0;
  if(typeof ns.capAnnounced!=="boolean") ns.capAnnounced=false;
  if(typeof ns.nextStartMoney!=="number") ns.nextStartMoney=0;
+ if(typeof ns.shikomiLvl!=="number") ns.shikomiLvl=0;
     S=ns;
     const awaySec=Math.min((8+2*((S.fameShop&&S.fameShop[1])||0))*3600, Math.max(0, (Date.now()-(data.lastSeen||Date.now()))/1000));
     const off=S.ascending ? 0 : perSec(S)*awaySec*offlineRate(S);

@@ -155,6 +155,9 @@
     .buyHead h2 { margin:0; font-size:12.5px; white-space:nowrap; }
     #buyMode { flex:1; margin-bottom:0; }
     #shopImg { max-height:72px; }
+    /* スマホでは店の画像を隠して、ボタンを画面内に収める */
+    #shopImg { display:none; }
+    #guestBtn { position:fixed; top:auto; bottom:96px; right:10px; z-index:40; }
   }
 </style>
 </head>

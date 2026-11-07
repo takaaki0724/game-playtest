@@ -187,6 +187,47 @@
     #serveArea { height:auto; }
     #shopWrap { flex:none; min-height:0; margin-bottom:0; }
   }
+  /* ===== v11.3 スマホ版レイアウト刷新（承認モック準拠・max-width:899px のみ） =====
+     固定高レイアウトを廃止してページ全体スクロールにし、表示順を
+     数字 → 出来事 → 操作ブロック → ランク箱 → タブ/ビュー → 記録・リセット に並べ替える */
+  @media (max-width:899px){
+    body { height:auto; min-height:100dvh; overflow:visible; }
+    .wrap { flex:none; min-height:0; }
+    #stats { order:1; }
+    #ticker { order:2; }
+    .mainGrid { display:contents; }
+    .colL { order:3; overflow:visible; min-height:0; margin-top:8px; }
+    #progStrip { order:4; padding:7px 10px; line-height:1.55; }
+    .colR { order:5; overflow:visible; min-height:0; margin-top:10px; }
+    p.small { order:6; }
+    #recordSec { order:7; }
+    .wrap > div:last-child { order:8; }
+    /* ビューは自然な高さにしてページスクロールで最後まで辿れるようにする */
+    .viewWrap { flex:none; min-height:0; }
+    .view { height:auto; overflow:visible; }
+    .buyScroll { flex:none; min-height:0; overflow:visible; }
+    /* 操作ブロック: 店画像を帯状に表示（高さ120px） */
+    #shopWrap { margin-bottom:8px; }
+    #shopImg { display:block; width:100%; height:120px; max-height:120px; object-fit:cover; margin-bottom:0; }
+    #btnServe { padding:15px 10px; }
+    #secRow { margin-top:10px !important; flex-wrap:nowrap; }
+    /* 特別なお客さんボタンは店画像の右下に戻し、操作ボタンに重ねない */
+    #guestBtn { position:absolute; top:auto; right:6px; bottom:14px; z-index:5; }
+    /* 秒分ボタン: 2段表記（上段=名前＋秒分 / 下段=金額＋ため置き）。接続文字列 .lsep はスマホでは隠す */
+    .secBtn { white-space:normal; overflow:visible; line-height:1.3; padding:8px 4px; }
+    .secBtn .l1 { display:block; font-size:12.5px; white-space:nowrap; }
+    .secBtn .l2 { display:block; font-size:11.5px; margin-top:2px; white-space:nowrap; }
+    .secBtn .lsep { display:none; }
+    /* ランク箱の圧縮: ランク行＋バー / 次のランク / 目標 / 次のこだわり */
+    #progRow { flex-wrap:wrap; row-gap:2px; }
+    #progNext { flex:0 1 100%; }
+    #progGoal { flex:0 1 100%; white-space:normal; }
+    #capLine { margin-top:2px; }
+    /* 買い物ヘッダは2段（見出し行 → 買い方ボタン行・全幅） */
+    .buyHead { display:block; }
+    .buyHead h2 { margin:0 0 6px; }
+    #buyMode { width:100%; margin-bottom:8px; }
+  }
 </style>
 </head>
 <body>
@@ -1334,13 +1375,15 @@ function render(){
   const stkDots=(b,mx)=>{ let d=""; for(let i=0;i<mx;i++) d+= (i<b.n?"●":"○"); return d; };
   const s10=S.sec10||{n:0,t:0}, s30=S.sec30||{n:0,t:0};
   const sec10Val=(S.ups&&S.ups[9])?20:10;
-  if(perSec(S)<=0){ b10.textContent="⏱ おすすめ（自動収入が始まると使える）"; b10.disabled=true; }
-  else if(s10.n<=0 && s10.t){ b10.textContent="⏱ おすすめ "+sec10Val+"秒分（あと"+Math.max(1,Math.ceil((s10.t-nowMs)/1000))+"秒）"; b10.disabled=true; }
-  else { b10.textContent="⏱ おすすめ "+sec10Val+"秒分 = "+fmt(perSec(S)*sec10Val)+" "+stkDots(s10, secStockMax(S,10)); b10.disabled=s10.n<=0; }
-  if(!act2Unlocked(S)){ b30.textContent="🎉 大入り 30秒分（こだわり『常連カード発行』で解放）"; b30.disabled=true; }
-  else if(perSec(S)<=0){ b30.textContent="🎉 大入り 30秒分（自動収入が始まると使える）"; b30.disabled=true; }
-  else if(s30.n<=0 && s30.t){ b30.textContent="🎉 大入り 30秒分（あと"+Math.max(1,Math.ceil((s30.t-nowMs)/1000))+"秒）"; b30.disabled=true; }
-  else { b30.textContent="🎉 大入り 30秒分 = "+fmt(perSec(S)*30)+" "+stkDots(s30, secStockMax(S,30)); b30.disabled=s30.n<=0; }
+  // v11.3: ラベルを span 化する（連結すると従来の文字列と完全一致。スマホでは CSS で .lsep を隠して2段表示にする）
+  const setSecLabel=(b,l1,mid,l2,tail)=>{ b.innerHTML='<span class="l1">'+l1+'</span><span class="lsep">'+mid+'</span><span class="l2">'+l2+'</span>'+(tail?'<span class="lsep">'+tail+'</span>':""); };
+  if(perSec(S)<=0){ setSecLabel(b10,"⏱ おすすめ","（","自動収入が始まると使える","）"); b10.disabled=true; }
+  else if(s10.n<=0 && s10.t){ setSecLabel(b10,"⏱ おすすめ "+sec10Val+"秒分","（","あと"+Math.max(1,Math.ceil((s10.t-nowMs)/1000))+"秒","）"); b10.disabled=true; }
+  else { setSecLabel(b10,"⏱ おすすめ "+sec10Val+"秒分"," = ",fmt(perSec(S)*sec10Val)+" "+stkDots(s10, secStockMax(S,10)),""); b10.disabled=s10.n<=0; }
+  if(!act2Unlocked(S)){ setSecLabel(b30,"🎉 大入り 30秒分","（こだわり","『常連カード発行』で解放","）"); b30.disabled=true; }
+  else if(perSec(S)<=0){ setSecLabel(b30,"🎉 大入り 30秒分","（","自動収入が始まると使える","）"); b30.disabled=true; }
+  else if(s30.n<=0 && s30.t){ setSecLabel(b30,"🎉 大入り 30秒分","（","あと"+Math.max(1,Math.ceil((s30.t-nowMs)/1000))+"秒","）"); b30.disabled=true; }
+  else { setSecLabel(b30,"🎉 大入り 30秒分"," = ",fmt(perSec(S)*30)+" "+stkDots(s30, secStockMax(S,30)),""); b30.disabled=s30.n<=0; }
   $("mOrders").textContent = "🍽 注文" + (act2Unlocked(S) ? " "+ordersDoneCount(S)+"/20" : " 🔒");
   $("mRegs").textContent = "📖 常連と実績" + ((S.seenStories||[]).length > (S.storyAck||0) ? " ●" : "");
   const g=prestigeGain(S);
